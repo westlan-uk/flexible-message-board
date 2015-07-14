@@ -77,8 +77,7 @@ app.post('/control/admin', urlencodedParser, function(req, res) {
             req.session.adminPermission = true;
             res.sendFile(path.join(__dirname, 'control/admin.html'));
         }
-    }
-    else {
+    } else {
         res.json({ login: "failed" });
     }
 });
@@ -147,8 +146,7 @@ function Screen(socket) {
                     messages: this.urgentMessages
                 }
             );
-        }
-        else {
+        } else {
             this.s.emit('messages',
                 {
                     position: this.currentMsg,
@@ -172,8 +170,7 @@ function Screen(socket) {
             
             if (message.urgent && message.urgent === true) {
                 this.addUrgentMessage(message);
-            }
-            else {
+            } else {
                 this.addMessage(message);
             }
         }
