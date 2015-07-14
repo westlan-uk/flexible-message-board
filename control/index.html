@@ -2,8 +2,8 @@
 <html>
 <head>
 	<title>Node FMB Control Panel</title>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/control.css" />
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="/css/control.css" />
 </head>
 <body>
     <div class="container-fluid">
@@ -35,12 +35,14 @@
     	
     	<div class="row">
     		<div id="login" class="col-md-2 col-md-push-10">
-    			<div class="input-group">
-					<input type="text" class="form-control" placeholder="Admin Code">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">Login</button>
-					</span>
-				</div>
+    			<form id="adminLogin" action="/control/admin" method="POST">
+	    			<div class="input-group">
+						<input type="password" class="form-control" name="password" placeholder="Admin Code" required="required" />
+						<span class="input-group-btn">
+							<button id="loginButton" class="btn btn-default" type="submit">Login</button>
+						</span>
+					</div>
+				</form>
     		</div>
     		<div id="foot" class="col-md-10 col-md-pull-2">
     			<p>&#169; 2015 FMB JS</p>
@@ -49,8 +51,8 @@
 	</div>
 	
 	<!-- Script -->
-	<script src="js/jquery-1.11.3.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/control.js"></script>
+	<script src="/js/jquery-1.11.3.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/control.js"></script>
 </body>
 </html>
