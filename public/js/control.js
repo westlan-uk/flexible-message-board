@@ -2,6 +2,29 @@ $( document ).ready(function() {
     var screenAvailable = false;
     var adminPermission = false;
     
+    function getUrlParameter(sParam)
+    {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) 
+        {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam) 
+            {
+                return sParameterName[1];
+            }
+        }
+    }
+    
+    var success = getUrlParameter('success');
+    if (success !== undefined) {
+        if (success === "true") {
+            $('#content').prepend('<div class="alert alert-success" role="alert">Successfully submitted and process. Watch the screen!</div>');
+        } else {
+            $('#content').prepend('<div class="alert alert-danger" role="alert">Could not be added to messages. Contact a member of staff!</div>');
+        }
+    }
+    
     $.get('/status/screen', function(data) {
         if (data.status === true) {
             screenAvailable = true;
