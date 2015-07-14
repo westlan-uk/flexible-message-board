@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Node FMB Control Panel</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/control.css" />
+</head>
+<body>
+    <div class="container-fluid">
+    	<div class="row">
+    	    <div id="head" class="col-md-10">
+    	        <h1><a class="nounderline" href="/control">FMB</a></h1>
+    	        <ul class="nav nav-pills">
+    	        	<li role="presentation" class="active"><a href="/control">Home</a></li>
+    	        	<li role="presentation"><a href="/control/shoutout">Shoutout</a></li>
+    	        	<li role="presentation" class="disabled"><a href="/control/slides">Slides</a></li>
+    	        </ul>
+    	    </div>
+    	    <div id="status" class="col-md-2">
+    	        <h4>Status</h4>
+    	        <p id="screen" class="bg-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Screen Available</p>
+    	        <p id="admin" class="bg-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Logged In</p>
+    	    </div>
+    	</div>
+    	
+    	<hr />
+    	
+    	<div class="row">
+    		<div id="content" class="col-md-12">
+    			
+    		</div>
+    	</div>
+    	
+    	<hr />
+    	
+    	<div class="row">
+    		<div id="login" class="col-md-2 col-md-push-10">
+    			<div class="input-group">
+					<input type="text" class="form-control" placeholder="Admin Code">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">Login</button>
+					</span>
+				</div>
+    		</div>
+    		<div id="foot" class="col-md-10 col-md-pull-2">
+    			<p>&#169; 2015 FMB JS</p>
+    		</div>
+    	</div>
+	</div>
+	
+	<!-- Script -->
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/control.js"></script>
+</body>
+</html>
