@@ -158,11 +158,13 @@ function Screen(socket) {
     };
     
     this.addMessage = function(message) {
-        
+        this.messages.push(message);
+        console.log(message);
     };
     
     this.addUrgentMessage = function(message) {
-        
+        this.urgentMessages.push(message);
+        console.log(message);
     };
     
     this.processMessage = function(message) {
