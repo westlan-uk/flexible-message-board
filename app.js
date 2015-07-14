@@ -111,18 +111,72 @@ io.sockets.on('connection', function(socket) {
     var ip = socket.handshake.headers['x-forwarded-for'] || socket.handsake.address;
     console.log('Client Screen Connection from: ' + ip);
     
-    
     // SCREEN //
-    
+    socket.on('requestMessages', function() {
+        screen.emitUpdates();
+    });
     
     // CONTROL //
     app.post('/shoutout', function(req, res) {
-        console.log('Client submitted shoutout');
+        var ip = req.headers['x-forwarded-for'];
+        console.log('Shoutout submitted from ip: ' + ip);
     });
 });
 
 
 function Screen(socket) {
     this.s = socket;
-    this.currentMessages = [];
+    this.messages = defaultMessages;
+    this.currentMsg = 0;
+    
+    this.urgentMessages = [];
+    this.currentUrg = 0;
+    
+    this.emitUpdates = function() {
+        if (this.urgentMessages.length > 0) {
+            this.s.emit('urgentMessages', 
+                {
+                    position: this.currentUrg,
+                    messages: this.urgentMessages
+                }
+            );
+        }
+        else {
+            this.s.emit('messages',
+                {
+                    position: this.currentMsg,
+                    messages: this.messages
+                }
+            );
+        }
+    };
+    
+    this.addMessage = function(message) {
+        
+    };
+    
+    this.addUrgentMessage = function(message) {
+        
+    };
+    
+    this.processMessage = function(message) {
+        if (message.type) {
+            message.added = Math.floor(Date.now() / 1000);
+            
+            if (message.urgent && message.urgent === true) {
+                this.addUrgentMessage(message);
+            }
+            else {
+                this.addMessage(message);
+            }
+        }
+    };
 }
+
+/*
+Loop through array following delays.
+If Urgent message is received via post, broadcast to all screens.
+
+Screens on connect request all messages to process. Will receive one urgent if present or all current messages.
+Once an urgent message has finished displaying (expired), it should request the next urgent message or all messages from the server.
+*/
