@@ -24,6 +24,31 @@ console.log('Server started on port ' + process.env.PORT);
 
 var screen;
 var adminPassword = process.argv.slice(2); // First cli arg
+var shoutoutDuration = 30;
+var shoutoutExpiry = 300;
+
+
+var defaultMessages = [
+        {
+            type: 'text',
+            content: '<p>Hellow World</p>',
+            expire: 0,
+            delay: 10
+        },
+        {
+            type: 'text',
+            content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at http://www</p>',
+            expire: 18000,
+            delay: 10
+        },
+        {
+            type: 'text',
+            content: '<p>If you want to create a shoutout, go to http://fmb/control/shoutout</p>',
+            expire: 0,
+            delay: 15
+        }
+    ];
+
 
 // Routes //
 app.get('/', function(req, res) {
@@ -42,12 +67,6 @@ app.get('/control/slides', function(req, res) {
     res.sendFile(path.join(__dirname, 'control/slides.html'));
 });
 
-app.post('/control/admin/logout', function(req, res) {
-    req.session.adminPermission = false;
-    console.log('Client logged out');
-    res.redirect('/control');
-});
-
 app.post('/control/admin', urlencodedParser, function(req, res) {
     if (req.body.hasOwnProperty('password')) {
         var pass = req.body.password;
@@ -59,10 +78,15 @@ app.post('/control/admin', urlencodedParser, function(req, res) {
             req.session.adminPermission = true;
             res.sendFile(path.join(__dirname, 'control/admin.html'));
         }
-    }
-    else {
+    } else {
         res.json({ login: "failed" });
     }
+});
+
+app.post('/control/admin/logout', function(req, res) {
+    req.session.adminPermission = false;
+    console.log('Client logged out');
+    res.redirect('/control');
 });
 
 app.get('/status/screen', function (req, res) {
@@ -87,18 +111,92 @@ io.sockets.on('connection', function(socket) {
     var ip = socket.handshake.headers['x-forwarded-for'] || socket.handsake.address;
     console.log('Client Screen Connection from: ' + ip);
     
-    
     // SCREEN //
-    
+    socket.on('requestMessages', function() {
+        screen.emitUpdates();
+    });
     
     // CONTROL //
-    app.post('/shoutout', function(req, res) {
-        console.log('Client submitted shoutout');
+    app.post('/shoutout', urlencodedParser, function(req, res) {
+        var ip = req.headers['x-forwarded-for'];
+        console.log('Shoutout submitted from ip: ' + ip);
+        
+        var success = false;
+        
+        if (req.body.hasOwnProperty('content')) {
+            success = true;
+            
+            screen.processMessage({
+                type: "shoutout",
+                content: req.body.content,
+                urgent: true,
+                expire: shoutoutExpiry,
+                delay: shoutoutDuration
+            });
+        }
+        
+        if (success) {
+            res.redirect('/control/shoutout?success=true');
+        } else {
+            res.redirect('/control/shoutout?success=false');
+        }
     });
 });
 
 
 function Screen(socket) {
     this.s = socket;
-    this.currentMessages = [];
+    this.messages = defaultMessages;
+    this.currentMsg = 0;
+    
+    this.urgentMessages = [];
+    this.currentUrg = 0;
+    
+    this.emitUpdates = function() {
+        if (this.urgentMessages.length > 0) {
+            this.s.emit('urgentMessages',
+                {
+                    position: this.currentUrg,
+                    messages: this.urgentMessages
+                }
+            );
+        } else {
+            this.s.emit('messages',
+                {
+                    position: this.currentMsg,
+                    messages: this.messages
+                }
+            );
+        }
+    };
+    
+    this.addMessage = function(message) {
+        this.messages.push(message);
+        console.log(message);
+    };
+    
+    this.addUrgentMessage = function(message) {
+        this.urgentMessages.push(message);
+        console.log(message);
+    };
+    
+    this.processMessage = function(message) {
+        if (message.type) {
+            message.added = Math.floor(Date.now() / 1000);
+            
+            if (message.urgent && message.urgent === true) {
+                this.addUrgentMessage(message);
+            } else {
+                this.addMessage(message);
+            }
+        }
+    };
 }
+
+/*
+Loop through array following delays.
+If Urgent message is received via post, broadcast to all screens.
+
+Screens on connect request all messages to process. Will receive one urgent if present or all current messages.
+Once an urgent message has finished displaying (expired), it should request the next urgent message or all messages from the server.
+*/

@@ -18,11 +18,11 @@ ___
 
 ###Usage
 
-* Run app.js using NodeJS.
+* Run `app.js` using NodeJS.
     * Format: `node app.js {adminPassword}`
     * Example: `node app.js admin1234`
-* Go to /screen to view the output of FMB.
-* Go to /control to control the output.
+* Go to `/` to view the output of FMB.
+* Go to `/control` to control the output.
 
 ___
 
@@ -36,7 +36,7 @@ Sent as application/json POST requests
     {
         type: "youtube",
         url: "https://www.youtube.com/watch?v=L3yAImNACTw",
-        time: 0
+        expire: 0
     }
 
 ####Standard HTML - `/html`
@@ -53,9 +53,8 @@ Sent as application/json POST requests
 * `content` - Content to be displayed
 * `delay` - Seconds message should show before proceeding
 * `expire` - Seconds before message should expire
-* `time` - Time video should play for
 * `type` - Defines the message type
 * `urgent` - Will override current message
 * `url` - URL Relevant to the type. (youtube video etc.)
 
-If 0 is used for a period of time, it will be treated as forever (or in the case of youtube video, when it ends).
+If `0` is used for `expire`, it will be treated as infinite (or in the case of media (youtube etc.), when it ends).

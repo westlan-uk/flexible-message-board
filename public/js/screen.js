@@ -1,6 +1,6 @@
 $( document ).ready(function() {
     function resetFrame() {
-       var defaultFrame = '<div id="frame"></div>';
+        var defaultFrame = '<div id="frame"></div>';
         $( "body" ).prepend( defaultFrame ); 
     }
     
