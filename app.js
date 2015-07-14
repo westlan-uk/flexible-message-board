@@ -25,6 +25,7 @@ console.log('Server started on port ' + process.env.PORT);
 var screen;
 var adminPassword = process.argv.slice(2); // First cli arg
 var shoutoutDuration = 30;
+var shoutoutExpiry = 300;
 
 
 var defaultMessages = [
