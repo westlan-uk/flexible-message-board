@@ -117,15 +117,28 @@ io.sockets.on('connection', function(socket) {
     });
     
     // CONTROL //
-    app.post('/shoutout', function(req, res) {
+    app.post('/shoutout', urlencodedParser, function(req, res) {
         var ip = req.headers['x-forwarded-for'];
         console.log('Shoutout submitted from ip: ' + ip);
         
+        var success = false;
+        
         if (req.body.hasOwnProperty('content')) {
+            success = true;
+            
             screen.processMessage({
                 type: "shoutout",
-                content: req.body.content
+                content: req.body.content,
+                urgent: true,
+                expire: shoutoutExpiry,
+                delay: shoutoutDuration
             });
+        }
+        
+        if (success) {
+            res.redirect('/control/shoutout?success=true');
+        } else {
+            res.redirect('/control/shoutout?success=false');
         }
     });
 });
