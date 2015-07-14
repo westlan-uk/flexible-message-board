@@ -120,6 +120,13 @@ io.sockets.on('connection', function(socket) {
     app.post('/shoutout', function(req, res) {
         var ip = req.headers['x-forwarded-for'];
         console.log('Shoutout submitted from ip: ' + ip);
+        
+        if (req.body.hasOwnProperty('content')) {
+            screen.processMessage({
+                type: "shoutout",
+                content: req.body.content
+            });
+        }
     });
 });
 
@@ -134,7 +141,7 @@ function Screen(socket) {
     
     this.emitUpdates = function() {
         if (this.urgentMessages.length > 0) {
-            this.s.emit('urgentMessages', 
+            this.s.emit('urgentMessages',
                 {
                     position: this.currentUrg,
                     messages: this.urgentMessages
