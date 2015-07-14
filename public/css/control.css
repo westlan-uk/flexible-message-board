@@ -1,0 +1,28 @@
+#head {
+    
+}
+
+#status p {
+    padding: 2px 5px;
+}
+#status p span {
+    padding-right: 5px;
+}
+
+#content {
+    background-color: red;
+}
+
+#foot {
+    
+}
+
+.nounderline {
+    color: #000;
+    text-decoration: none;
+}
+
+.nounderline:hover{
+    color: #000;
+    text-decoration: none;
+}
