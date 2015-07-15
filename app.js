@@ -212,8 +212,14 @@ function Screen(socket) {
         }
         
         if (urgent === true) {
+            if (screen.currentUrg > messages.length) {
+                screen.currentUrg = 0;
+            }
             screen.urgentMessages = messages;
         } else {
+            if (screen.currentMsg > messages.length) {
+                screen.currentMsg = 0;
+            }
             screen.messages = messages;
         }
     };
