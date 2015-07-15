@@ -114,18 +114,20 @@ app.get('/status/admin', function (req, res) {
 
 io.sockets.on('connection', function(socket) {
     
+    var ip = socket.handshake.headers['x-forwarded-for'] || socket.handsake.address;
+    console.log('Client Screen Connection from: ' + ip);
+    
     if (screen === undefined) {
         socket.screen = new Screen(socket);
         screen = socket.screen;
     }
     
-    var ip = socket.handshake.headers['x-forwarded-for'] || socket.handsake.address;
-    console.log('Client Screen Connection from: ' + ip);
     
     // SCREEN //
     socket.on('requestMessages', function() {
         screen.emitUpdates();
     });
+    
     
     // CONTROL //
     app.post('/shoutout', urlencodedParser, function(req, res) {
