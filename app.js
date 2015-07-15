@@ -24,28 +24,39 @@ console.log('Server started on port ' + process.env.PORT);
 
 var screen;
 var adminPassword = process.argv.slice(2); // First cli arg
-var shoutoutDuration = 30;
-var shoutoutExpiry = 300;
 
+var id = 0;
 
+var shoutoutDuration = 30; // In seconds
+var shoutoutExpiry = 300; // In seconds
+
+var expiryCheckInterval = 20; // In seconds
+
+var serverStarted = Math.floor(Date.now() / 1000);
 var defaultMessages = [
         {
             type: 'text',
             content: '<p>Hellow World</p>',
-            expire: 0,
-            delay: 10
+            expire: 10,
+            delay: 10,
+            added: serverStarted,
+            id: id++
         },
         {
             type: 'text',
             content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at http://www</p>',
             expire: 18000,
-            delay: 10
+            delay: 10,
+            added: serverStarted,
+            id: id++
         },
         {
             type: 'text',
             content: '<p>If you want to create a shoutout, go to http://fmb/control/shoutout</p>',
             expire: 0,
-            delay: 15
+            delay: 15,
+            added: serverStarted,
+            id: id++
         }
     ];
 
