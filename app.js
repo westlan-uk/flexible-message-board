@@ -187,32 +187,81 @@ function Screen(socket) {
     };
     
     this.addMessage = function(message) {
-        this.messages.push(message);
+        var urgent = message.urgent || false;
+        
+        if (urgent === true) {
+            this.urgentMessages.push(message);
+        } else {
+            this.messages.push(message);
+        }
+        
+        console.log("START");
         console.log(message);
+        console.log("END");
     };
     
-    this.addUrgentMessage = function(message) {
-        this.urgentMessages.push(message);
-        console.log(message);
+    this.removeMessage = function(message) {
+        var urgent = message.urgent || false;
+        
+        var messages = (urgent === true) ? screen.urgentMessages : screen.messages;
+        
+        var index = messages.indexOf(message);
+        
+        if (index > -1) {
+            messages.splice(index, 1);
+        }
+        
+        if (urgent === true) {
+            screen.urgentMessages = messages;
+        } else {
+            screen.messages = messages;
+        }
     };
     
     this.processMessage = function(message) {
-        if (message.type) {
+        if (message.type !== undefined) {
             message.added = Math.floor(Date.now() / 1000);
+            message.id = id++;
             
-            if (message.urgent && message.urgent === true) {
-                this.addUrgentMessage(message);
-            } else {
-                this.addMessage(message);
-            }
+            this.addMessage(message);
+            
+            this.emitUpdates();
         }
     };
+    
+    for (var i = 0; i < defaultMessages.length; i++) {
+        this.addMessage(defaultMessages[i]);
+    }
+    
+    var checkExpiry = setInterval(function() {
+        console.log('Checking Expiry @ ' + Math.floor(Date.now() / 1000));
+        var toExpire = [];
+        
+        for (var i = 0; i < screen.messages.length; i++) {
+            var message = screen.messages[i];
+            if (message.expire !== undefined && message.expire > 0) {
+                if ((message.added + message.expire) < Math.floor(Date.now() / 1000)) {
+                    toExpire.push(message);
+                }
+            }
+        }
+        
+        for (var i = 0; i < screen.urgentMessages.length; i++) {
+            var message = screen.urgentMessages[i];
+            if (message.expire !== undefined && message.expire > 0) {
+                if ((message.added + message.expire) < Math.floor(Date.now() / 1000)) {
+                    toExpire.push(message);
+                }
+            }
+        }
+        
+        for (var i = 0; i < toExpire.length; i++) {
+            screen.removeMessage(toExpire[i]);
+        }
+        
+        if (toExpire.length > 0) {
+            screen.emitUpdates();
+            //console.log(screen.messages);
+        }
+    }, expiryCheckInterval * 1000);
 }
-
-/*
-Loop through array following delays.
-If Urgent message is received via post, broadcast to all screens.
-
-Screens on connect request all messages to process. Will receive one urgent if present or all current messages.
-Once an urgent message has finished displaying (expired), it should request the next urgent message or all messages from the server.
-*/
