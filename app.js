@@ -157,13 +157,16 @@ io.sockets.on('connection', function(socket) {
 
 function Screen(socket) {
     this.s = socket;
-    this.messages = defaultMessages;
+    this.messages = [];
     this.currentMsg = 0;
     
     this.urgentMessages = [];
     this.currentUrg = 0;
     
+    
     this.emitUpdates = function() {
+        console.log('Emitting Updates');
+        
         if (this.urgentMessages.length > 0) {
             this.s.emit('urgentMessages',
                 {
