@@ -114,7 +114,7 @@ app.get('/status/admin', function (req, res) {
 
 io.sockets.on('connection', function(socket) {
     
-    var ip = socket.handshake.headers['x-forwarded-for'] || socket.handsake.address;
+    var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
     console.log('Client Screen Connection from: ' + ip);
     
     if (screen === undefined) {
