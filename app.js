@@ -28,7 +28,7 @@ var adminPassword = process.argv.slice(2); // First cli arg
 var id = 0;
 
 var shoutoutDuration = 30; // In seconds
-var shoutoutExpiry = 300; // In seconds
+var shoutoutExpiry = 30; // In seconds
 
 var expiryCheckInterval = 20; // In seconds
 
