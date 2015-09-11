@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     function resetFrame() {
-        var defaultFrame = '<div id="frame"></div>';
-        $( "body" ).prepend( defaultFrame ); 
+        $( "#frame" ).remove();
+        $( "body" ).prepend( '<div id="frame"></div>' );
     }
     
     resetFrame();
