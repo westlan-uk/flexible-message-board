@@ -159,30 +159,17 @@ io.sockets.on('connection', function(socket) {
 
 function Screen(socket) {
     this.s = socket;
+    
     this.messages = [];
-    this.currentMsg = 0;
-    
     this.urgentMessages = [];
-    this.currentUrg = 0;
-    
     
     this.emitUpdates = function() {
         console.log('Emitting Updates');
         
         if (this.urgentMessages.length > 0) {
-            this.s.emit('urgentMessages',
-                {
-                    position: this.currentUrg,
-                    messages: this.urgentMessages
-                }
-            );
+            this.s.emit('urgentMessages', { messages: this.urgentMessages });
         } else {
-            this.s.emit('messages',
-                {
-                    position: this.currentMsg,
-                    messages: this.messages
-                }
-            );
+            this.s.emit('messages', { messages: this.messages });
         }
     };
     
@@ -212,14 +199,8 @@ function Screen(socket) {
         }
         
         if (urgent === true) {
-            if (screen.currentUrg > messages.length) {
-                screen.currentUrg = 0;
-            }
             screen.urgentMessages = messages;
         } else {
-            if (screen.currentMsg > messages.length) {
-                screen.currentMsg = 0;
-            }
             screen.messages = messages;
         }
     };
