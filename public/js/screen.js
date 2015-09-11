@@ -59,4 +59,54 @@ $( document ).ready(function() {
             currentMsg = 0;
         }
     });
+    
+    var checkDelay = setInterval(function() {
+        var timeNow = Math.floor(Date.now() / 1000);
+        
+        var currScreen = null;
+        
+        if (currentUrg >= urgentMessages.length) {
+            currentUrg = 0;
+        }
+        
+        if (currentMsg >= messages.length) {
+            currentMsg = 0;
+        }
+        
+        if (urgentMessages.length > 0) {
+            currScreen = urgentMessages[currentUrg];
+        }
+        else {
+            currScreen = messages[currentMsg];
+        }
+        
+        console.log(currScreen);
+        
+        if (typeof currScreen.delay !== undefined) {
+            if ((timeNow - currentMsgStart) >= currScreen.delay) {
+                console.log('Display Next');
+                
+                if (urgentMessages.length > 0) {
+                    if ((currentUrg + 1) >= urgentMessages.length) {
+                        currentUrg = 0;
+                    }
+                    else {
+                        currentUrg++;
+                    }
+                    
+                    displayMessage(urgentMessages[currentUrg]);
+                }
+                else {
+                    if ((currentMsg + 1) >= messages.length) {
+                        currentMsg = 0;
+                    }
+                    else {
+                        currentMsg++;
+                    }
+                    
+                    displayMessage(messages[currentMsg]);
+                }
+            }
+        }
+    }, 2000); // ms between checks
 });
