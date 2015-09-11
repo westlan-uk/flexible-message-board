@@ -39,4 +39,24 @@ $( document ).ready(function() {
     socket.on('connect', function() {
         console.log('Connected');
     });
+    
+    socket.on('urgentMessages', function(data) {
+        console.log('Received Urgent');
+        urgentMessages = data.messages;
+        
+        if (currentUrg > urgentMessages.length) {
+            currentUrg = 0;
+        }
+        
+        displayMessage(urgentMessages[currentUrg]);
+    });
+        
+    socket.on('messages', function(data) {
+        console.log('Updated Messages');
+        messages = data.messages;
+        
+        if (currentMsg > messages.length) {
+            currentMsg = 0;
+        }
+    });
 });
