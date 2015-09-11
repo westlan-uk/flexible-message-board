@@ -1,3 +1,7 @@
+#!/usr/bin/node 
+
+require("./public/js/allure.js");
+
 var path = require('path'),
     http = require('http'),
     express = require('express'),
@@ -6,7 +10,10 @@ var path = require('path'),
     io = require('socket.io').listen(server, { log: true }),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
-    expressSession = require('express-session');
+    expressSession = require('express-session'),
+	jsonParser = bodyParser.json(),
+	urlencodedParser = (bodyParser.urlencoded({ extended: false }))
+
 
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
@@ -16,52 +23,6 @@ app.use(expressSession({
     saveUninitialized: false
 }));
 
-var jsonParser = bodyParser.json();
-var urlencodedParser = (bodyParser.urlencoded({ extended: false }));
-
-server.listen(process.env.PORT);
-console.log('Server started on port ' + process.env.PORT);
-
-var screen;
-var adminPassword = process.argv.slice(2); // First cli arg
-
-var id = 0;
-
-var shoutoutDuration = 30; // In seconds
-var shoutoutExpiry = 30; // In seconds
-
-var expiryCheckInterval = 20; // In seconds
-
-var serverStarted = Math.floor(Date.now() / 1000);
-var defaultMessages = [
-        {
-            type: 'text',
-            content: '<p>Hellow World</p>',
-            expire: 10,
-            delay: 10,
-            added: serverStarted,
-            id: id++
-        },
-        {
-            type: 'text',
-            content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at http://www</p>',
-            expire: 18000,
-            delay: 10,
-            added: serverStarted,
-            id: id++
-        },
-        {
-            type: 'text',
-            content: '<p>If you want to create a shoutout, go to http://fmb/control/shoutout</p>',
-            expire: 0,
-            delay: 15,
-            added: serverStarted,
-            id: id++
-        }
-    ];
-
-
-// Routes //
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'screen.html'));
 });
@@ -100,6 +61,32 @@ app.post('/control/admin/logout', function(req, res) {
     res.redirect('/control');
 });
 
+app.post('/shoutout', urlencodedParser, function(req, res) {
+	var ip = req.headers['x-forwarded-for'];
+	console.log('Shoutout submitted from ip: ' + ip);
+	
+	var success = false;
+	
+	if (req.body.hasOwnProperty('content')) {
+		success = true;
+		
+		screen.processMessage({
+			type: "shoutout",
+			content: req.body.content,
+			urgent: true,
+			expire: shoutoutExpiry,
+			delay: shoutoutDuration
+		});
+	}
+	
+	if (success) {
+		res.redirect('/control/shoutout?success=true');
+	} else {
+		res.redirect('/control/shoutout?success=false');
+	}
+});
+
+
 app.get('/status/screen', function (req, res) {
     var sDef = (screen !== undefined);
     res.json({ status: sDef });
@@ -109,146 +96,17 @@ app.get('/status/admin', function (req, res) {
     var aDef = (req.session.adminPermission || false);
     res.json({ status: aDef });
 });
-// Routes //
 
+var settings = require("./settings.js").settings
 
-io.sockets.on('connection', function(socket) {
-    
-    var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
-    console.log('Client Screen Connection from: ' + ip);
-    
-    if (screen === undefined) {
-        socket.screen = new Screen(socket);
-        screen = socket.screen;
-    }
-    
-    
-    // SCREEN //
-    socket.on('requestMessages', function() {
-        screen.emitUpdates();
-    });
-    
-    
-    // CONTROL //
-    app.post('/shoutout', urlencodedParser, function(req, res) {
-        var ip = req.headers['x-forwarded-for'];
-        console.log('Shoutout submitted from ip: ' + ip);
-        
-        var success = false;
-        
-        if (req.body.hasOwnProperty('content')) {
-            success = true;
-            
-            screen.processMessage({
-                type: "shoutout",
-                content: req.body.content,
-                urgent: true,
-                expire: shoutoutExpiry,
-                delay: shoutoutDuration
-            });
-        }
-        
-        if (success) {
-            res.redirect('/control/shoutout?success=true');
-        } else {
-            res.redirect('/control/shoutout?success=false');
-        }
-    });
-});
+server.listen(settings.port);
+console.log('Server started on port ' + settings.port);
 
+ConnectionHandler = require('./ConnectionHandler.js').ConnectionHandler;
 
-function Screen(socket) {
-    this.s = socket;
-    
-    this.messages = [];
-    this.urgentMessages = [];
-    
-    this.emitUpdates = function() {
-        console.log('Emitting Updates');
-        
-        if (this.urgentMessages.length > 0) {
-            this.s.emit('urgentMessages', { messages: this.urgentMessages });
-        } else {
-            this.s.emit('messages', { messages: this.messages });
-        }
-    };
-    
-    this.addMessage = function(message) {
-        var urgent = message.urgent || false;
-        
-        if (urgent === true) {
-            this.urgentMessages.push(message);
-        } else {
-            this.messages.push(message);
-        }
-        
-        console.log("START");
-        console.log(message);
-        console.log("END");
-    };
-    
-    this.removeMessage = function(message) {
-        var urgent = message.urgent || false;
-        
-        var messages = (urgent === true) ? screen.urgentMessages : screen.messages;
-        
-        var index = messages.indexOf(message);
-        
-        if (index > -1) {
-            messages.splice(index, 1);
-        }
-        
-        if (urgent === true) {
-            screen.urgentMessages = messages;
-        } else {
-            screen.messages = messages;
-        }
-    };
-    
-    this.processMessage = function(message) {
-        if (message.type !== undefined) {
-            message.added = Math.floor(Date.now() / 1000);
-            message.id = id++;
-            
-            this.addMessage(message);
-            
-            this.emitUpdates();
-        }
-    };
-    
-    for (var i = 0; i < defaultMessages.length; i++) {
-        this.addMessage(defaultMessages[i]);
-    }
-    
-    var checkExpiry = setInterval(function() {
-        console.log('Checking Expiry @ ' + Math.floor(Date.now() / 1000));
-        var toExpire = [];
-        
-        for (var i = 0; i < screen.messages.length; i++) {
-            var message = screen.messages[i];
-            if (message.expire !== undefined && message.expire > 0) {
-                if ((message.added + message.expire) < Math.floor(Date.now() / 1000)) {
-                    toExpire.push(message);
-                }
-            }
-        }
-        
-        for (var i = 0; i < screen.urgentMessages.length; i++) {
-            var message = screen.urgentMessages[i];
-            if (message.expire !== undefined && message.expire > 0) {
-                if ((message.added + message.expire) < Math.floor(Date.now() / 1000)) {
-                    toExpire.push(message);
-                }
-            }
-        }
-        
-        for (var i = 0; i < toExpire.length; i++) {
-            screen.removeMessage(toExpire[i]);
-        }
-        
-        if (toExpire.length > 0) {
-            screen.emitUpdates();
-            //console.log(screen.messages);
-        }
-    }, expiryCheckInterval * 1000);
-}
+io.sockets.on('connection', ConnectionHandler);
+
+var serverStarted = Math.floor(Date.now() / 1000);
+var screen = new require("./Screen.js").Screen(settings)
+
+settings.defaultMessages.forEach(screen.addMessage);
