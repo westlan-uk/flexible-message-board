@@ -3,13 +3,19 @@ function Screen(settings) {
 
     this.messages = [];
     
-    this.emitUpdates = function() {
-		console.log("updating");
-		connections.forEach(function(connectionHandler) {
-			console.log("updating conn", self.messages)
-			connectionHandler.emit('messages', { messages: self.messages });
+    this.emitMessagesToEveryone = function() {
+		console.log("Sending messages to all connections, of which there are: " + connections.length);
+
+		connections.forEach(function(connection) {
+			console.log(connection.socket.conn.id, "==", connection.connectionHandler.socket.conn.id)
+			self.emitMessagesTo(connection.connectionHandler)
 		});
     };
+
+	this.emitMessagesTo = function(connectionHandler) {
+		console.log("emitting messages to conn, count: ", self.messages.length, "state: ", connectionHandler.socket.conn.id)
+		connectionHandler.socket.emit('messages', { messages: self.messages });
+	};
     
     this.addMessage = function(message) {
 		self.messages.push(message);
@@ -29,12 +35,12 @@ function Screen(settings) {
             
             self.addMessage(message);
             
-            self.emitUpdates();
+            self.emitMessagesToEveryone();
         }
     };
         
     this.removeExpiredMessages = function() {
-        console.log('Checking Expiry @ ' + Math.floor(Date.now() / 1000));
+        console.log('Checking Expiry @ ' + Math.floor(Date.now() / 1000) + ', message count: ' + self.messages.length);
         var toExpire = [];
         
 		self.messages.forEach(function(message) {
@@ -50,7 +56,7 @@ function Screen(settings) {
 		});
         
         if (toExpire.length > 0) {
-            self.emitUpdates();
+            self.emitMessagesToEveryone();
         }
     } 
 

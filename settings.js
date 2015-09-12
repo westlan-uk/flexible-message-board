@@ -7,14 +7,14 @@ settings = {
         {
             type: 'text',
             content: '<p>Hellow World</p>',
-            expire: 10,
+            expire: 0,
             delay: 10,
             added: 0,
         },
         {
             type: 'text',
             content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at http://www</p>',
-            expire: 18000,
+            expire: 0,
             delay: 10,
             added: 0,
         },
