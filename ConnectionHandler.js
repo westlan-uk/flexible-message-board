@@ -7,16 +7,22 @@ function ConnectionHandler(socket) {
 	this.init = function() {
 		self.setupSocketHandlers();
 		
-		screen.emitUpdates();
+		screen.emitMessagesTo(self);
 	}
 
 	this.setupSocketHandlers = function () {
 		self.socket.on('requestMessages', function() {
-			screen.emitUpdates();
+			screen.emitMessages(self);
 		});
 	};
 
-	connections.push(this);
+	socket.on('disconnect', function() {
+		connections.forEach(function(connection, index) {
+			if (connection.socket == socket) {
+				connections.splice(index, 1);
+			}
+		});
+	});
 
 	this.init();
 
