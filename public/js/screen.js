@@ -64,7 +64,6 @@ function State() {
 	this.connectionHandler = new ConnectionHandler();
 	this.ui = new UserInterface();
     this.messages = [];
-    this.urgentMessages = [];
 
 	return this;
 }
@@ -82,9 +81,7 @@ function tick() {
 	
 	state = window.state;
 
-	if (state.urgentMessages.notEmpty()) {
-		nextMessage = urgentMessages.lastItem()
-	} else if (state.messages.notEmpty()) {
+	if (state.messages.notEmpty()) {
 		nextMessage = state.messages.lastItem()
 	} else {
 		return;
