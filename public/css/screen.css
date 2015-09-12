@@ -1,3 +1,13 @@
+body {
+	font-family: sans-serif;
+}
+
+p.message {
+	background-color: lightgray;
+	border-radius: 1em;
+	padding: 1em;
+}
+
 #frame {
     width: 100%;
     height: 100%;
