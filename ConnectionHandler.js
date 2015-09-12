@@ -17,8 +17,6 @@ function ConnectionHandler(socket) {
 	};
 
 	socket.on('disconnect', function() {
-		toRemove = [];
-
 		connections.forEach(function(connection, index) {
 			if (connection.socket == socket) {
 				connections.splice(index, 1);

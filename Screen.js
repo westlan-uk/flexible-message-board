@@ -6,9 +6,9 @@ function Screen(settings) {
     this.emitMessagesToEveryone = function() {
 		console.log("Sending messages to all connections, of which there are: " + connections.length);
 
-		connections.forEach(function(connection) {
-			console.log(connection.socket.conn.id, "==", connection.connectionHandler.socket.conn.id)
-			self.emitMessagesTo(connection.connectionHandler)
+		connections.forEach(function(connectionHandler) {
+			console.log(connectionHandler.socket.conn.id, "==", connectionHandler.socket.conn.id)
+			self.emitMessagesTo(connectionHandler)
 		});
     };
 

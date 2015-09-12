@@ -109,16 +109,13 @@ ConnectionHandler = require('./ConnectionHandler.js').ConnectionHandler;
 io.sockets.on('connection', function(socket) {
 	handler = new ConnectionHandler(socket);
 
-	connections.push({
-		socket: socket,
-		connectionHandler: handler		
-	});
+	connections.push(handler);
 });
 
 setInterval(function() {
 	console.log("Connections: " + connections.length)
-	connections.forEach(function(connection) {
-		console.log(" - " + connection.socket.conn.id + " / " + connection.connectionHandler.ip + " disconnected?: " + connection.socket.disconnected)
+	connections.forEach(function(connectionHandler) {
+		console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected)
 	});
 }, 1 * 1000);
 
