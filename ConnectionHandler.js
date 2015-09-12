@@ -1,22 +1,27 @@
 function ConnectionHandler(socket) {
 	var self = this;
+	this.socket = socket;
+	this.ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+	console.log('Client Screen Connection from: ' + this.ip);
 
-    var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
-    console.log('Client Screen Connection from: ' + ip);
+	this.init = function() {
+		self.setupSocketHandlers();
+		
+		screen.emitUpdates();
+	}
 
-	this.init = function() { 
-		// CONTROL //
-	};
-
-	this.setupSocketHandlers = function (socket, screen) {
-		socket.on('requestMessages', function() {
+	this.setupSocketHandlers = function () {
+		self.socket.on('requestMessages', function() {
 			screen.emitUpdates();
 		});
 	};
 
+	connections.push(this);
+
 	this.init();
 
 	return this;
+
 }
 
 module.exports = {

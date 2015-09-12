@@ -6,8 +6,8 @@ var path = require('path'),
     http = require('http'),
     express = require('express'),
     app = express(),
-    server = http.createServer(app),
-    io = require('socket.io').listen(server, { log: true }),
+    httpServer = http.createServer(app),
+    io = require('socket.io').listen(httpServer, { log: true }),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     expressSession = require('express-session'),
@@ -98,15 +98,16 @@ app.get('/status/admin', function (req, res) {
 });
 
 var settings = require("./settings.js").settings
+screen = new require("./Screen.js").Screen(settings)
 
-server.listen(settings.port);
+httpServer.listen(settings.port);
 console.log('Server started on port ' + settings.port);
 
+connections = []
 ConnectionHandler = require('./ConnectionHandler.js').ConnectionHandler;
 
 io.sockets.on('connection', ConnectionHandler);
 
 var serverStarted = Math.floor(Date.now() / 1000);
-var screen = new require("./Screen.js").Screen(settings)
 
 settings.defaultMessages.forEach(screen.addMessage);

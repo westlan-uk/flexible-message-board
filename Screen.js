@@ -2,36 +2,24 @@ function Screen(settings) {
 	var self = this;
 
     this.messages = [];
-    this.urgentMessages = [];
     
     this.emitUpdates = function() {
+		console.log("updating");
+		connections.forEach(function(connectionHandler) {
+			console.log("updating conn", self.messages)
+			connectionHandler.emit('messages', { messages: self.messages });
+		});
     };
     
     this.addMessage = function(message) {
-        var urgent = message.urgent || false;
-
-        if (urgent === true) {
-            self.urgentMessages.push(message);
-        } else {
-        	self.messages.push(message);
-        }
+		self.messages.push(message);
     };
     
     this.removeMessage = function(message) {
-        var urgent = message.urgent || false;
-        
-        var messages = (urgent === true) ? self.urgentMessages : self.messages;
-        
-        var index = messages.indexOf(message);
+        var index = self.messages.indexOf(message);
         
         if (index > -1) {
-            messages.splice(index, 1);
-        }
-        
-        if (urgent === true) {
-            self.urgentMessages = messages;
-        } else {
-            self.messages = messages;
+            self.messages.splice(index, 1);
         }
     };
     
@@ -58,14 +46,6 @@ function Screen(settings) {
             }
         });
        
-	   	self.urgentMessages.forEach(function(message) { 
-            if (message.expire !== undefined && message.expire > 0) {
-                if ((message.added + message.expire) < Math.floor(Date.now() / 1000)) {
-                    toExpire.push(message);
-                }
-            }
-        });
-        
 		toExpire.forEach(function(message) {
             self.removeMessage(message);
 		});
