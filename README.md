@@ -27,6 +27,17 @@ ___
 ___
 
 
+### Tests
+
+This project uses nodeunit to run tests, at the moment there is no coverage. 
+
+	npm install nodeunit
+
+Once installed, tests can be run from the base directory, specifying "tests" as
+the directory that contains all the tests.
+
+	nodeunit tests
+
 ###Message Formats
 
 Sent as application/json POST requests
