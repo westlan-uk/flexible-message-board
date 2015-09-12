@@ -112,12 +112,12 @@ io.sockets.on('connection', function(socket) {
 	connections.push(handler);
 });
 
-setInterval(function() {
+function dumpCurrentConnections() {
 	console.log("Connections: " + connections.length)
 	connections.forEach(function(connectionHandler) {
 		console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected)
 	});
-}, 1 * 1000);
+}
 
 var serverStarted = Math.floor(Date.now() / 1000);
 

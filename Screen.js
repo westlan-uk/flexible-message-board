@@ -13,7 +13,7 @@ function Screen(settings) {
     };
 
 	this.emitMessagesTo = function(connectionHandler) {
-		console.log("emitting messages to conn, count: ", self.messages.length, "state: ", connectionHandler.socket.conn.id)
+		console.log("emitting messages to conn, count: ", self.messages.length, " id: ", connectionHandler.socket.conn.id)
 		connectionHandler.socket.emit('messages', { messages: self.messages });
 	};
     
