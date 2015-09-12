@@ -14,6 +14,7 @@ var path = require('path'),
 	jsonParser = bodyParser.json(),
 	urlencodedParser = (bodyParser.urlencoded({ extended: false }))
 
+var settings = require("./settings.js").settings
 
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
@@ -74,8 +75,8 @@ app.post('/shoutout', urlencodedParser, function(req, res) {
 			type: "shoutout",
 			content: req.body.content,
 			urgent: true,
-			expire: shoutoutExpiry,
-			delay: shoutoutDuration
+			expire: settings.shoutoutExpiry,
+			delay: settings.shoutoutDuration
 		});
 	}
 	
@@ -97,7 +98,6 @@ app.get('/status/admin', function (req, res) {
     res.json({ status: aDef });
 });
 
-var settings = require("./settings.js").settings
 screen = new require("./Screen.js").Screen(settings)
 
 httpServer.listen(settings.port);

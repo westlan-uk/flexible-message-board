@@ -26,7 +26,6 @@ function Screen(settings) {
     this.processMessage = function(message) {
         if (message.type !== undefined) {
             message.added = Math.floor(Date.now() / 1000);
-            message.id = id++;
             
             self.addMessage(message);
             
