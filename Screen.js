@@ -49,7 +49,7 @@ function Screen(settings) {
         
 		self.messages.forEach(function(message) {
             if (message.expire !== undefined && message.expire > 0) {
-                if ((message.added + message.expire) < Math.floor(Date.now() / 1000)) {
+                if ((message.added + message.expire) <= Math.floor(Date.now() / 1000)) {
                     toExpire.push(message);
                 }
             }
