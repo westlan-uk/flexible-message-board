@@ -9,24 +9,24 @@ settings = {
             content: '<p>Hellow World</p>',
             expire: 10,
             delay: 10,
-            added: 0
+            added: 0,
         },
         {
             type: 'text',
             content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at http://www</p>',
             expire: 18000,
             delay: 10,
-            added: 0
+            added: 0,
         },
         {
             type: 'text',
             content: '<p>If you want to create a shoutout, go to http://fmb/control/shoutout</p>',
             expire: 0,
             delay: 15,
-            added: 0
+            added: 0,
         }
     ]
-};
+}
 
 settings.port = function() {
 	port = process.env.PORT;
@@ -42,4 +42,4 @@ settings.adminPassword = process.argv.slice(2); // First cli arg
 
 module.exports = {
 	settings: settings
-};
+}

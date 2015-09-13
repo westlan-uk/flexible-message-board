@@ -7,13 +7,8 @@ function ConnectionHandler(socket) {
 	this.init = function() {
 		self.setupSocketHandlers();
 		
-<<<<<<< HEAD
-		screen.emitUpdates();
-	};
-=======
 		screen.emitMessagesTo(self);
 	}
->>>>>>> wluk/develop
 
 	this.setupSocketHandlers = function () {
 		self.socket.on('requestMessages', function() {
@@ -37,4 +32,4 @@ function ConnectionHandler(socket) {
 
 module.exports = {
 	ConnectionHandler: ConnectionHandler
-};
+}
