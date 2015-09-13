@@ -7,13 +7,13 @@ function Screen(settings) {
 		console.log("Sending messages to all connections, of which there are: " + connections.length);
 
 		connections.forEach(function(connectionHandler) {
-			console.log(connectionHandler.socket.conn.id, "==", connectionHandler.socket.conn.id)
-			self.emitMessagesTo(connectionHandler)
+			console.log(connectionHandler.socket.conn.id, "==", connectionHandler.socket.conn.id);
+			self.emitMessagesTo(connectionHandler);
 		});
     };
 
 	this.emitMessagesTo = function(connectionHandler) {
-		console.log("emitting messages to conn, count: ", self.messages.length, " id: ", connectionHandler.socket.conn.id)
+		console.log("emitting messages to conn, count: ", self.messages.length, " id: ", connectionHandler.socket.conn.id);
 		connectionHandler.socket.emit('messages', { messages: self.messages });
 	};
     
@@ -58,7 +58,7 @@ function Screen(settings) {
         if (toExpire.length > 0) {
             self.emitMessagesToEveryone();
         }
-    } 
+    };
 
 	setInterval(this.removeExpiredMessages, settings.expiryCheckInterval * 1000);
 
@@ -67,4 +67,4 @@ function Screen(settings) {
 
 module.exports = {
 	Screen: Screen
-}
+};
