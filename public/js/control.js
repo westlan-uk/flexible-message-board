@@ -2,8 +2,7 @@ $( document ).ready(function() {
     var screenAvailable = false;
     var adminPermission = false;
     
-    function getUrlParameter(sParam)
-    {
+    function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
         for (var i = 0; i < sURLVariables.length; i++) 
@@ -14,6 +13,8 @@ $( document ).ready(function() {
                 return sParameterName[1];
             }
         }
+
+		return null;
     }
     
     var success = getUrlParameter('success');

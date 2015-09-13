@@ -6,7 +6,7 @@ function UserInterface() {
 		el.html(message.content);
 
 		return el;
-	}
+	};
 
 	this.setStatus = function(message, karma) {
 		console.log('Status:', message, karma);
@@ -14,12 +14,12 @@ function UserInterface() {
 		$('#status').text(message);
 		$('#status').removeClass('bad good neutral');
 		$('#status').addClass(karma);
-	}
+	};
 
 	this.resetFrame = function() {
 		$( "#frame" ).remove();
 		$( "body" ).append( '<div id="frame"></div>' );
-	}
+	};
 
 	this.displayMessage = function(message) {
 		console.log('displaying message: ', message);
@@ -36,8 +36,7 @@ function UserInterface() {
 			default:
 				break;
 		}
-	}
-
+	};
 
 	return this;
 }
@@ -58,7 +57,7 @@ function ConnectionHandler() {
 		});
 		
 		self.socket.on('messages', function(data) {
-			console.log('Recv Messages', data)
+			console.log('Recv Messages', data);
 
 			data.messages.forEach(function(message) {
 				window.state.ui.displayMessage(message);
@@ -95,7 +94,7 @@ function tick() {
 	state = window.state;
 
 	if (state.messages.notEmpty()) {
-		nextMessage = state.messages.lastItem()
+		nextMessage = state.messages.lastItem();
 	} else {
 		return;
 	}
