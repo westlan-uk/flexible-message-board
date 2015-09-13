@@ -8,6 +8,14 @@ function UserInterface() {
 		return el;
 	};
 
+	this.setStatus = function(message, karma) {
+		console.log('Status:', message, karma);
+
+		$('#status').text(message);
+		$('#status').removeClass('bad good neutral');
+		$('#status').addClass(karma);
+	}
+
 	this.resetFrame = function() {
 		$( "#frame" ).remove();
 		$( "body" ).append( '<div id="frame"></div>' );
@@ -40,7 +48,12 @@ function ConnectionHandler() {
 
 	this.setupSocketHandlers = function() {
 		self.socket.on('connect', function() {
-			console.log('Connected');
+			window.state.ui.setStatus('Connected', 'good');
+		});
+
+		self.socket.on('disconnect', function() {
+			window.state.ui.setStatus('Disconnected', 'bad');
+			window.state.ui.resetFrame();
 		});
 		
 		self.socket.on('messages', function(data) {

@@ -106,7 +106,18 @@ console.log('Server started on port ' + settings.port);
 connections = []
 ConnectionHandler = require('./ConnectionHandler.js').ConnectionHandler;
 
-io.sockets.on('connection', ConnectionHandler);
+io.sockets.on('connection', function(socket) {
+	handler = new ConnectionHandler(socket);
+
+	connections.push(handler);
+});
+
+function dumpCurrentConnections() {
+	console.log("Connections: " + connections.length)
+	connections.forEach(function(connectionHandler) {
+		console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected)
+	});
+}
 
 var serverStarted = Math.floor(Date.now() / 1000);
 
