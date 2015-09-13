@@ -18,7 +18,7 @@ $( document ).ready(function() {
     }
     
     var success = getUrlParameter('success');
-    if (success !== undefined) {
+    if (success !== null) {
         if (success === "true") {
             $('#content').prepend('<div class="alert alert-success" role="alert">Successfully submitted and process. Watch the screen!</div>');
         } else {
