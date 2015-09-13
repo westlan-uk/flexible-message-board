@@ -18,6 +18,10 @@ function Screen(settings) {
 	};
     
     this.addMessage = function(message) {
+        if (message.added !== undefined && message.added === 0) {
+            message.added = Math.floor(Date.now() / 1000);
+        }
+        
 		self.messages.push(message);
     };
     
