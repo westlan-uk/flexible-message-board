@@ -8,7 +8,7 @@ function ConnectionHandler(socket) {
 		self.setupSocketHandlers();
 		
 		screen.emitUpdates();
-	}
+	};
 
 	this.setupSocketHandlers = function () {
 		self.socket.on('requestMessages', function() {
@@ -26,4 +26,4 @@ function ConnectionHandler(socket) {
 
 module.exports = {
 	ConnectionHandler: ConnectionHandler
-}
+};

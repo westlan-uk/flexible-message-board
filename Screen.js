@@ -6,7 +6,7 @@ function Screen(settings) {
     this.emitUpdates = function() {
 		console.log("updating");
 		connections.forEach(function(connectionHandler) {
-			console.log("updating conn", self.messages)
+			console.log("updating conn", self.messages);
 			connectionHandler.emit('messages', { messages: self.messages });
 		});
     };
@@ -52,7 +52,7 @@ function Screen(settings) {
         if (toExpire.length > 0) {
             self.emitUpdates();
         }
-    } 
+    };
 
 	setInterval(this.removeExpiredMessages, settings.expiryCheckInterval * 1000);
 
@@ -61,4 +61,4 @@ function Screen(settings) {
 
 module.exports = {
 	Screen: Screen
-}
+};
