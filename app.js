@@ -12,9 +12,9 @@ var path = require('path'),
     cookieParser = require('cookie-parser'),
     expressSession = require('express-session'),
 	jsonParser = bodyParser.json(),
-	urlencodedParser = (bodyParser.urlencoded({ extended: false }))
+	urlencodedParser = (bodyParser.urlencoded({ extended: false }));
 
-var settings = require("./settings.js").settings
+var settings = require("./settings.js").settings;
 
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
