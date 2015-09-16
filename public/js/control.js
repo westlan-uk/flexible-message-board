@@ -18,11 +18,11 @@ $( document ).ready(function() {
     }
     
     var success = getUrlParameter('success');
-    if (success !== undefined) {
+    if (success !== null) {
         if (success === "true") {
-            $('#content').prepend('<div class="alert alert-success" role="alert">Successfully submitted and process. Watch the screen!</div>');
+            $('#content').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Successfully submitted and process. Watch the screen!</div>');
         } else {
-            $('#content').prepend('<div class="alert alert-danger" role="alert">Could not be added to messages. Contact a member of staff!</div>');
+            $('#content').prepend('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Could not be added to messages. Contact a member of staff!</div>');
         }
     }
     
