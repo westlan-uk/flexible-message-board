@@ -44,9 +44,9 @@ app.post('/control/admin', urlencodedParser, function(req, res) {
     if (req.body.hasOwnProperty('password')) {
         var pass = req.body.password;
         
-        console.log("Login attempt: " + pass + " against: " + adminPassword);
+        console.log("Login attempt: " + pass + " against: " + settings.adminPassword);
         
-        if (pass == adminPassword) {
+        if (pass == settings.adminPassword) {
             console.log('Client logged in');
             req.session.adminPermission = true;
             res.sendFile(path.join(__dirname, 'control/admin.html'));
