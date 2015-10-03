@@ -75,6 +75,15 @@ app.get('/control/admin/settings', function(req, res) {
     res.json(settings);
 });
 
+app.post('/control/admin/settings', urlencodedParser, function(req, res) {
+    for (var setting in req.body) {
+        if (settings[setting] !== undefined) {
+            settings[setting] = req.body[setting];
+        }
+    }
+    res.redirect('/control/admin');
+});
+
 app.post('/shoutout', urlencodedParser, function(req, res) {
 	var ip = req.headers['x-forwarded-for'];
 	console.log('Shoutout submitted from ip: ' + ip);
