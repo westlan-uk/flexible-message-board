@@ -40,6 +40,15 @@ app.get('/control/slides', function(req, res) {
     res.sendFile(path.join(__dirname, 'control/slides.html'));
 });
 
+app.get('/control/admin', function(req, res) {
+    if (req.session.adminPermission === true) {
+        res.sendFile(path.join(__dirname, 'control/admin.html'));
+    }
+    else {
+        res.redirect('/control');
+    }
+});
+
 app.post('/control/admin', urlencodedParser, function(req, res) {
     if (req.body.hasOwnProperty('password')) {
         var pass = req.body.password;
@@ -60,6 +69,10 @@ app.post('/control/admin/logout', function(req, res) {
     req.session.adminPermission = false;
     console.log('Client logged out');
     res.redirect('/control');
+});
+
+app.get('/control/admin/settings', function(req, res) {
+    res.json(settings);
 });
 
 app.post('/shoutout', urlencodedParser, function(req, res) {
