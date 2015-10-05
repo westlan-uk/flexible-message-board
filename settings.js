@@ -1,9 +1,13 @@
 settings = {
-	id: 0,
-	shoutoutDuration: 30,
-	shoutoutExpiry: 30,
-	expiryCheckInterval: 20,
-	defaultMessages: [
+    id: 0,
+    layout: 1,
+    slideshowEnabled: true,
+    slideshowFrequency: 600,
+    tickerEnabled: true,
+    shoutoutDuration: 30,
+    shoutoutExpiry: 30,
+    expiryCheckInterval: 20,
+    defaultMessages: [
         {
             type: 'text',
             content: '<p>Hellow World</p>',
