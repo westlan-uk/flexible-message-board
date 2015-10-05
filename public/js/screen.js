@@ -41,6 +41,18 @@ function UserInterface() {
 	return this;
 }
 
+function Sound() {
+	this.init = function() {
+		var alarm = document.getElementById('alarm');
+		alarm.src = '/sounds/204424__jaraxe__alarm-3.wav';
+	};
+	
+	this.play = function() {
+		var alarm = document.getElementById('alarm');
+		alarm.play();
+	};
+}
+
 function ConnectionHandler() {
 	var self = this;
 
@@ -61,6 +73,7 @@ function ConnectionHandler() {
 
 			data.messages.forEach(function(message) {
 				window.state.ui.displayMessage(message);
+				window.state.sound.play();
 			});
 		});
 	};
@@ -75,6 +88,7 @@ function ConnectionHandler() {
 function State() {
 	this.connectionHandler = new ConnectionHandler();
 	this.ui = new UserInterface();
+	this.sound = new Sound();
     this.messages = [];
 
 	return this;
@@ -84,6 +98,7 @@ function init() {
 	window.state = new State();
     window.state.ui.resetFrame();
 	window.state.connectionHandler.init();
+	window.state.sound.init();
 
 	setInterval(tick, 2000); // ms between checks
 }
