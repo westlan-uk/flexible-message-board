@@ -98,12 +98,12 @@ app.get('/status/admin', function (req, res) {
     res.json({ status: aDef });
 });
 
-screen = new require("./Screen.js").Screen(settings)
+screen = new require("./Screen.js").Screen(settings);
 
 httpServer.listen(settings.port);
 console.log('Server started on port ' + settings.port);
 
-connections = []
+connections = [];
 ConnectionHandler = require('./ConnectionHandler.js').ConnectionHandler;
 
 io.sockets.on('connection', function(socket) {
@@ -115,7 +115,7 @@ io.sockets.on('connection', function(socket) {
 function dumpCurrentConnections() {
 	console.log("Connections: " + connections.length)
 	connections.forEach(function(connectionHandler) {
-		console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected)
+		console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected);
 	});
 }
 
