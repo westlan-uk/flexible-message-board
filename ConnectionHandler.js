@@ -7,13 +7,11 @@ function ConnectionHandler(socket) {
 	this.init = function() {
 		self.setupSocketHandlers();
 		
-		screen.emitMessagesTo(self);
+		screen.sendInitialData(self);
 	};
 
 	this.setupSocketHandlers = function () {
-		self.socket.on('requestMessages', function() {
-			screen.emitMessages(self);
-		});
+		
 	};
 
 	socket.on('disconnect', function() {

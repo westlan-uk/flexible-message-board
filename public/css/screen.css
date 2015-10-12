@@ -1,11 +1,30 @@
+html {
+	height: 100%;
+	overflow: hidden;
+}
+
 body {
 	font-family: sans-serif;
+	height: 100%;
+	margin: 0px;
+}
+
+audo {
+	display: none;
 }
 
 p.message {
 	background-color: lightgray;
 	border-radius: 1em;
 	padding: 1em;
+}
+
+.full-height {
+	height: 100%;
+}
+
+.auto-margin {
+	margin: auto;
 }
 
 #frame {
@@ -28,4 +47,44 @@ p.message {
 
 #status.good {
 	color: limegreen;
+}
+
+
+/* LAYOUTS */
+#slideshow {
+	display: flex;
+}
+
+#slideshow div {
+	margin: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.row {
+	margin: 0;
+}
+
+.row div {
+	padding: 0;
+}
+
+.row #ticker {
+	border-left: black solid 1px;
+}
+
+.layout1-slideshow {
+	width: 100%;
+	height: 80%;
+}
+
+.layout1-ticker {
+	width: 100%;
+	height: 20%;
+	border-top: black solid 1px;
+}
+
+.layout2-slideshow {
+	width: 100%;
+	height: 100%;
 }
