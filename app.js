@@ -81,32 +81,34 @@ app.post('/control/admin/settings', urlencodedParser, function(req, res) {
             settings[setting] = req.body[setting];
         }
     }
+    
+    screen.updateSettings();
+    
     res.redirect('/control/admin');
 });
 
 app.post('/shoutout', urlencodedParser, function(req, res) {
-	var ip = req.headers['x-forwarded-for'];
-	console.log('Shoutout submitted from ip: ' + ip);
-	
-	var success = false;
-	
-	if (req.body.hasOwnProperty('content')) {
-		success = true;
-		
-		screen.processMessage({
-			type: "shoutout",
-			content: req.body.content,
-			urgent: true,
-			expire: settings.shoutoutExpiry,
-			delay: settings.shoutoutDuration
-		});
-	}
-	
-	if (success) {
-		res.redirect('/control/shoutout?success=true');
-	} else {
-		res.redirect('/control/shoutout?success=false');
-	}
+    var ip = req.headers['x-forwarded-for'];
+    console.log('Shoutout submitted from ip: ' + ip);
+    
+    var success = false;
+    
+    if (req.body.hasOwnProperty('content')) {
+        success = true;
+        
+        screen.processMessage({
+            type: "tick",
+            content: req.body.content,
+            expire: settings.shoutoutExpiry,
+            delay: settings.shoutoutDuration
+        });
+    }
+    
+    if (success) {
+        res.redirect('/control/shoutout?success=true');
+    } else {
+        res.redirect('/control/shoutout?success=false');
+    }
 });
 
 
