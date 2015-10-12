@@ -120,33 +120,80 @@ function Sound() {
 
 function ConnectionHandler() {
 	var self = this;
-
+	
     this.socket = io.connect();
-
+	
 	this.setupSocketHandlers = function() {
 		self.socket.on('connect', function() {
 			window.state.ui.setStatus('Connected', 'good');
 		});
-
+		
 		self.socket.on('disconnect', function() {
 			window.state.ui.setStatus('Disconnected', 'bad');
 			window.state.ui.resetFrame();
 		});
 		
+		self.socket.on('initialise', function(data) {
+			console.log('Initialising Screen with data');
+			
+			window.state.settings = data.settings;
+			window.state.messages = data.messages;
+		});
+		
 		self.socket.on('messages', function(data) {
-			console.log('Recv Messages', data);
-
-			data.messages.forEach(function(message) {
-				window.state.ui.displayMessage(message);
-				window.state.sound.play();
+			window.state.ui.renderTick(data.message);
+			window.state.ticksShown.push(data.message.id);
+			window.state.sound.play();
+			window.state.messages.push(data.message);
+		});
+		
+		self.socket.on('settings', function (data) {
+			console.log('Updating Settings');
+			window.state.settings = data.settings;
+		});
+		
+		self.socket.on('expire', function (data) {
+			console.log('Expiring Message: ' + data.id);
+			
+			window.state.messages.forEach(function(message, i) {
+				if (message.id === data.id) {
+					window.state.messages.splice(i, 1);
+				}
 			});
 		});
+		
+		/*self.socket.on('messages', function(data) {
+			console.log('Updating Settings');
+			
+			var oldLayout = window.state.settings.layout;
+			
+			window.state.settings = data.settings;
+			
+			if (oldLayout !== window.state.settings.layout) {
+				window.state.ui.updateFrames();
+			}
+			
+			window.state.updateState();
+			
+			
+			console.log('Recv Messages', data);
+			window.state.messages = data.messages;
+			
+			data.messages.forEach(function(message) {
+				// Only immediately process for tick
+				if (message.type == 'tick' && window.state.ticksShown.indexOf(message.id) === -1) {
+					window.state.ui.renderTick(message);
+					window.state.ticksShown.push(message.id);
+					window.state.sound.play();
+				}
+			});
+		});*/
 	};
-
+	
 	this.init = function() {
 		this.setupSocketHandlers();
 	};
-
+	
 	return this;
 }
 
