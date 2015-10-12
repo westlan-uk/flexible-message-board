@@ -202,35 +202,107 @@ function State() {
 	this.ui = new UserInterface();
 	this.sound = new Sound();
     this.messages = [];
-
+    this.settings = [];
+    
+    /* Slideshow */
+    this.isSlideshow = true;
+    this.currentSlideStart = 0;
+    this.lastSlide = -1; // index, not id
+    this.slideshowStarted = Math.floor(Date.now() / 1000);
+    this.slideshowEnded = 0;
+    
+    /* Ticker */
+    this.ticksShown = [];
+	
+	
+	this.updateState = function() {
+		if (this.settings.slideshowEnabled === false) {
+			this.isSlideshow = false;
+		}
+	};
+	
 	return this;
 }
 
-function init() {     
+function init() {
 	window.state = new State();
     window.state.ui.resetFrame();
 	window.state.connectionHandler.init();
 	window.state.sound.init();
-
+	
 	setInterval(tick, 2000); // ms between checks
+}
+
+function tickDebug(state, timeNow) {
+	console.log("------------------");
+	console.log("tick@" + timeNow);
+	console.log("isSlide: " + state.isSlideshow);
+	console.log("lastSlide: " + state.lastSlide);
+	console.log("slideshowFreq: " + state.settings.slideshowFrequency);
+	console.log("slideshowEnded: " + state.slideshowEnded);
 }
 
 function tick() {
 	var timeNow = Math.floor(Date.now() / 1000);
+	var state = window.state;
+	//tickDebug(state, timeNow);
 	
-	state = window.state;
-
-	if (state.messages.notEmpty()) {
-		nextMessage = state.messages.lastItem();
-	} else {
-		return;
+	if (!state.isSlideshow && (state.slideshowEnded + parseInt(state.settings.slideshowFrequency)) <= timeNow) {
+		state.isSlideshow = true;
+		state.slideshowStarted = Math.floor(Date.now() / 1000);
 	}
-	
-	console.log(nextMessage);
-	
-	if ((timeNow - currentMsgStart) >= nextMessage.delay) {
-		console.log('Display Next', nextMessage);
+	else if (state.isSlideshow && (state.slideshowStarted + parseInt(state.settings.slideshowDuration)) <= timeNow) {
+		state.isSlideshow = false;
+		state.lastSlide = -1;
+		state.slideshowEnded = Math.floor(Date.now() / 1000);
 		
-		displayMessage(nextMessage);
+		state.ui.updateFrames();
 	}
-} 
+	
+	
+	if (state.isSlideshow) {
+		var found = false;
+		
+		if (state.lastSlide !== -1 && (state.currentSlideStart + state.messages[state.lastSlide].delay) > timeNow) {
+			found = true;
+		}
+		
+		this.getLatestSlide = function() {
+			for (var i = (state.lastSlide + 1); i < state.messages.length; i++) {
+				if (state.messages[i].type == 'slide') {
+					return state.messages[i];
+				}
+			}
+			
+			return null;
+		};
+		
+		if (!found) {
+			if ((state.lastSlide + 1) >= state.messages.length) {
+				state.lastSlide = -1;
+			}
+			
+			var message = this.getLatestSlide();
+			
+			if (message !== null) {
+				state.ui.renderSlide(message);
+				state.lastSlide = state.messages.indexOf(message);
+				state.currentSlideStart = Math.floor(Date.now() / 1000);
+			}
+		}
+	}
+	
+	//if (state.messages.notEmpty()) {
+	//	nextMessage = state.messages.lastItem();
+	//} else {
+	//	return;
+	//}
+	
+	//console.log(nextMessage);
+	
+	//if ((timeNow - currentMsgStart) >= nextMessage.delay) {
+	//	console.log('Display Next', nextMessage);
+	//	
+	//	displayMessage(nextMessage);
+	//}
+}

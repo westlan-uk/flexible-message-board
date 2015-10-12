@@ -2,16 +2,20 @@
 <html>
 <head>
 	<title>Node FMB Screen</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/screen.css" />
 <body>
+	<header id="header">
+		<h1>FMB</h1>
+		<p id="status">Waiting...</p>
+	</header>
+	
 	<!-- Script -->
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/jquery-1.11.3.min.js"></script>
 	<script src="js/allure.js"></script>
 	<script src="js/screen.js"></script>
-	<h1>FMB</h1>
 	<script>$( document ).ready(init);</script>
-	<p id = "status">Waiting...</p>
 	
 	<!-- Sounds -->
 	<audio id="alarm"></audio>
