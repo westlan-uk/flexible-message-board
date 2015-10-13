@@ -58,4 +58,10 @@ $( document ).ready(function() {
             $('#content').prepend('<div class="alert alert-danger" role="alert">The screen is not yet available! Please visit the <a href="/" target="_blank">Screen</a> and refresh this page to try again!</div>');
         }
     });
+    
+    $('.disabled-admin').click(function () {
+        if ($( this ).hasClass('disabled')) {
+            event.preventDefault();
+        }
+    });
 });
