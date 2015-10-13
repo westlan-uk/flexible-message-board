@@ -1,4 +1,4 @@
-function ConnectionHandler(socket) {
+function ConnectionHandler(server, socket) {
 	var self = this;
 	this.socket = socket;
 	this.ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
@@ -7,7 +7,7 @@ function ConnectionHandler(socket) {
 	this.init = function() {
 		self.setupSocketHandlers();
 		
-		screen.sendInitialData(self);
+		server.screen.sendInitialData(self);
 	};
 
 	this.setupSocketHandlers = function () {
@@ -15,9 +15,9 @@ function ConnectionHandler(socket) {
 	};
 
 	socket.on('disconnect', function() {
-		connections.forEach(function(connection, index) {
+		server.connections.forEach(function(connection, index) {
 			if (connection.socket == socket) {
-				connections.splice(index, 1);
+				server.connections.splice(index, 1);
 			}
 		});
 	});
