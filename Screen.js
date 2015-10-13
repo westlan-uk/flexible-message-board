@@ -1,12 +1,13 @@
-function Screen(settings) {
-	var self = this;
+function Screen(server) {
+    var self = this;
+    var settings = server.settings;
 
     this.messages = [];
     
     this.emitMessagesToEveryone = function (socketName, data) {
-        console.log("Sending messages to all connections, of which there are: " + connections.length);
+        console.log("Sending messages to all connections, of which there are: " + server.connections.length);
         
-        connections.forEach(function(connectionHandler) {
+        server.connections.forEach(function(connectionHandler) {
             console.log(connectionHandler.socket.conn.id, "==", connectionHandler.socket.conn.id);
             self.emitMessagesTo(connectionHandler, socketName, data);
         });
@@ -64,7 +65,7 @@ function Screen(settings) {
         console.log('Checking Expiry @ ' + Math.floor(Date.now() / 1000) + ', message count: ' + self.messages.length);
         var toExpire = [];
         
-		self.messages.forEach(function(message) {
+        self.messages.forEach(function(message) {
             if (message.expire !== undefined && message.expire > 0) {
                 if ((message.added + message.expire) <= Math.floor(Date.now() / 1000)) {
                     toExpire.push(message);
@@ -72,17 +73,17 @@ function Screen(settings) {
             }
         });
        
-		toExpire.forEach(function(message) {
+        toExpire.forEach(function(message) {
             self.removeMessage(message);
             self.sendExpireNotice(message.id);
         });
     };
 
-	setInterval(this.removeExpiredMessages, settings.expiryCheckInterval * 1000);
+    setInterval(this.removeExpiredMessages, settings.expiryCheckInterval * 1000);
 
-	return this;
+    return this;
 }
 
 module.exports = {
-	Screen: Screen
+    Screen: Screen
 };
