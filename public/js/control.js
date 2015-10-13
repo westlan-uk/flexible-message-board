@@ -49,6 +49,7 @@ $( document ).ready(function() {
             adminImg.addClass('glyphicon-ok');
             $('#adminLogin').remove();
             $('#login').append('<form id="adminLogout" action="/control/admin/logout" method="POST"><button id="logoutButton" class="btn btn-default" type="submit">Logout</button></form>');
+            $('.disabled-admin').removeClass('disabled');
         }
     });
     
