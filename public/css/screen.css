@@ -17,6 +17,7 @@ p.message {
 	background-color: lightgray;
 	border-radius: 1em;
 	padding: 1em;
+	font-size: 2em;
 }
 
 .full-height {
@@ -53,6 +54,8 @@ p.message {
 /* LAYOUTS */
 #slideshow {
 	display: flex;
+	font-size: 5em;
+	text-align: center;
 }
 
 #slideshow div {

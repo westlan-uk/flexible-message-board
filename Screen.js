@@ -38,6 +38,10 @@ function Screen(server) {
         this.emitMessagesTo(connectionHandler, 'initialise', { messages: self.messages, settings: settings });
     };
     
+    this.forceRefresh = function(connectionHandler) {
+        this.emitMessagesToEveryone('refresh', {});
+    };
+    
     this.processMessage = function(message) {
         if (message.type !== undefined) {
             message.added = Math.floor(Date.now() / 1000);

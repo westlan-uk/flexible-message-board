@@ -152,6 +152,10 @@ function ConnectionHandler() {
 			window.state.settings = data.settings;
 		});
 		
+		self.socket.on('refresh', function () {
+			window.location.reload();
+		});
+		
 		self.socket.on('expire', function (data) {
 			console.log('Expiring Message: ' + data.id);
 			
