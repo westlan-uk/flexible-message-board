@@ -251,12 +251,14 @@ function tick() {
 		state.isSlideshow = true;
 		state.slideshowStarted = Math.floor(Date.now() / 1000);
 	}
-	else if (state.isSlideshow && (state.slideshowStarted + parseInt(state.settings.slideshowDuration)) <= timeNow) {
-		state.isSlideshow = false;
-		state.lastSlide = -1;
-		state.slideshowEnded = Math.floor(Date.now() / 1000);
-		
-		state.ui.updateFrames();
+	else if (parseInt(state.settings.slideshowDuration) != 0) {
+		if (state.isSlideshow && (state.slideshowStarted + parseInt(state.settings.slideshowDuration)) <= timeNow) {
+			state.isSlideshow = false;
+			state.lastSlide = -1;
+			state.slideshowEnded = Math.floor(Date.now() / 1000);
+			
+			state.ui.updateFrames();
+		}
 	}
 	
 	
