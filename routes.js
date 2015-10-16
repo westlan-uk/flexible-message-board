@@ -68,6 +68,61 @@ function Route(s) {
         res.redirect('/control/admin');
     });
     
+    s.app.post('/control/admin/refresh', function(req, res) {
+        s.screen.forceRefresh();
+    });
+    
+    s.app.get('/control/admin/slides', function(req, res) {
+        var slides = [];
+        var allMessages = s.screen.messages;
+        
+        for (var i = 0; i < allMessages.length; i++) {
+            if (allMessages[i].type == 'slide') {
+                slides.push(allMessages[i]);
+            }
+        }
+        
+        res.json(slides);
+    });
+    
+    s.app.post('/slide', s.urlencodedParser, function(req, res) {
+        var ip = req.headers['x-forwarded-for'];
+        console.log('Slide usubmitted from ip: ' + ip);
+        
+        var success = false;
+        
+        if (req.body.hasOwnPropery('content')
+            && req.body.hasOwnProperty('delay')
+            && req.body.hasOwnProperty('expire')) {
+            success = true;
+            
+            s.screen.processMessage({
+                type: "slide",
+                content: req.body.content,
+                expire: req.body.expire,
+                delay: req.body.delay
+            });
+        }
+    });
+    
+    s.app.get('/slide/delete', s.urlencodedParser, function(req, res) {
+        var success = false;
+        
+        if (req.query.hasOwnProperty('id')) {
+            var id = parseInt(req.query.id);
+            var ip = req.headers['x-forwarded-for'];
+            console.log('Slide with id "' + id + '" being deleted from ip: ' + ip);
+            
+            s.screen.messages.forEach(function(message) {
+                if (message.id === id) {
+                    success = true;
+                    s.screen.removeMessage(message);
+                }
+            });
+        }
+        
+        res.redirect('/control/admin?success=' + success);
+    });
     
     s.app.post('/shoutout', s.urlencodedParser, function(req, res) {
         var ip = req.headers['x-forwarded-for'];
@@ -86,11 +141,7 @@ function Route(s) {
             });
         }
         
-        if (success) {
-            res.redirect('/control/shoutout?success=true');
-        } else {
-            res.redirect('/control/shoutout?success=false');
-        }
+        res.redirect('/control/shoutout?success=' + success);
     });
     
     
