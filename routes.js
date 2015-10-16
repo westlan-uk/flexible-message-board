@@ -91,7 +91,7 @@ function Route(s) {
         
         var success = false;
         
-        if (req.body.hasOwnPropery('content')
+        if (req.body.hasOwnProperty('content')
             && req.body.hasOwnProperty('delay')
             && req.body.hasOwnProperty('expire')) {
             success = true;
