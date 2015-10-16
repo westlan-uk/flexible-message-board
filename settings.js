@@ -3,7 +3,7 @@ settings = {
     layout: 1,
     slideshowEnabled: true,
     slideshowFrequency: 600,
-    slideshowDuration: 30,
+    slideshowDuration: 0,
     tickerEnabled: true,
     shoutoutDuration: 30,
     shoutoutExpiry: 30,
@@ -12,7 +12,7 @@ settings = {
         {
             id: 0,
             type: 'slide',
-            content: '<p>Hellow World</p>',
+            content: '<p>Hello World</p>',
             expire: 10,
             delay: 10,
             added: 0
@@ -20,15 +20,15 @@ settings = {
         {
             id: 0,
             type: 'slide',
-            content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at http://www</p>',
-            expire: 18000,
+            content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at wiki.westlan.co.uk</p>',
+            expire: 0,
             delay: 10,
             added: 0
         },
         {
             id: 0,
             type: 'slide',
-            content: '<p>If you want to create a shoutout, go to http://fmb/control/shoutout</p>',
+            content: '<p>If you want to create a shoutout, go to http://projector/control/shoutout</p>',
             expire: 0,
             delay: 15,
             added: 0

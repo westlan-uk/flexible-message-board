@@ -25,3 +25,22 @@
     color: #000;
     text-decoration: none;
 }
+
+.inline-delete {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #ebdcda;
+    color: #fff;
+    padding: 2px 5px;
+    text-align: center;
+    font-size: .923em;
+    text-decoration: none;
+    min-width: 45px;
+    white-space: nowrap;
+}
+
+.inline-delete:hover {
+    text-decoration: none;
+    background-color: #c65d5a;
+    color: #fff;
+}
