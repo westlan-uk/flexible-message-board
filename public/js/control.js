@@ -14,13 +14,13 @@ $( document ).ready(function() {
             }
         }
 
-		return null;
+        return null;
     }
     
     var success = getUrlParameter('success');
     if (success !== null) {
         if (success === "true") {
-            $('#content').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Successfully submitted and process. Watch the screen!</div>');
+            $('#content').prepend('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Successfully submitted and processed. Watch the screen!</div>');
         } else {
             $('#content').prepend('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Could not be added to messages. Contact a member of staff!</div>');
         }
@@ -48,7 +48,8 @@ $( document ).ready(function() {
             adminImg.removeClass('glyphicon-remove');
             adminImg.addClass('glyphicon-ok');
             $('#adminLogin').remove();
-            $('#login').append('<form id="adminLogout" action="/control/admin/logout" method="POST"><button id="logoutButton" class="btn btn-default" type="submit">Logout</button></form>');
+            $('#login').append('<form id="adminLogout" action="/control/admin/logout" method="POST"><button id="logoutButton" class="btn btn-default" type="submit">Logout</button></form>'
+            + '<form id="refresh" action="/control/admin/refresh" method="POST"><button id="refresh" class="btn btn-default" type="submit">Force Refresh</button></form>');
             $('.disabled-admin').removeClass('disabled');
         }
     });
@@ -63,6 +64,7 @@ $( document ).ready(function() {
     $('.disabled-admin').click(function () {
         if ($( this ).hasClass('disabled')) {
             event.preventDefault();
+            console.log("fuck you, sir");
         }
     });
 });
