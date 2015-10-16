@@ -46,8 +46,10 @@ function UserInterface() {
 	this.renderTick = function(message) {
 		var tick = $('<p class="message"></p>');
 		tick.html(message.content);
+		tick.css('display', 'none');
 		
 		$('#ticker').prepend(tick);
+		tick.slideDown();
 		$('#ticker').find('p').slice(50).remove();
 	};
 	
