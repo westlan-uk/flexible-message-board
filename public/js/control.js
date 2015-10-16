@@ -49,6 +49,7 @@ $( document ).ready(function() {
             adminImg.addClass('glyphicon-ok');
             $('#adminLogin').remove();
             $('#login').append('<form id="adminLogout" action="/control/admin/logout" method="POST"><button id="logoutButton" class="btn btn-default" type="submit">Logout</button></form>');
+            $('.disabled-admin').removeClass('disabled');
         }
     });
     
@@ -56,6 +57,12 @@ $( document ).ready(function() {
         if (!screenAvailable) {
             event.preventDefault();
             $('#content').prepend('<div class="alert alert-danger" role="alert">The screen is not yet available! Please visit the <a href="/" target="_blank">Screen</a> and refresh this page to try again!</div>');
+        }
+    });
+    
+    $('.disabled-admin').click(function () {
+        if ($( this ).hasClass('disabled')) {
+            event.preventDefault();
         }
     });
 });
