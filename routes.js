@@ -87,7 +87,7 @@ function Route(s) {
     
     s.app.post('/slide', s.urlencodedParser, function(req, res) {
         var ip = req.headers['x-forwarded-for'];
-        console.log('Slide usubmitted from ip: ' + ip);
+        console.log('Slide submitted from ip: ' + ip);
         
         var success = false;
         
