@@ -249,6 +249,7 @@ function tickDebug(state, timeNow) {
 	console.log("lastSlide: " + state.lastSlide);
 	console.log("slideshowFreq: " + state.settings.slideshowFrequency);
 	console.log("slideshowEnded: " + state.slideshowEnded);
+	console.log("------------------");
 }
 
 function tick() {
@@ -274,7 +275,7 @@ function tick() {
 	if (state.isSlideshow) {
 		var found = false;
 		
-		if (state.lastSlide !== -1 && (state.currentSlideStart + state.messages[state.lastSlide].delay) > timeNow) {
+		if (state.lastSlide !== -1 && (state.currentSlideStart + parseInt(state.messages[state.lastSlide].delay)) > timeNow) {
 			found = true;
 		}
 		
