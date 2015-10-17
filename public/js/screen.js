@@ -143,7 +143,7 @@ function ConnectionHandler() {
 		});
 		
 		self.socket.on('messages', function(data) {
-			if (data.type === 'tick') {
+			if (data.message.type === 'tick') {
 				window.state.ui.renderTick(data.message);
 				window.state.ticksShown.push(data.message.id);
 				window.state.sound.play();
