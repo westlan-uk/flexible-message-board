@@ -9,9 +9,11 @@ Install NPM and run the following commands in the Node FMB folder:
 
     npm install express
     npm install socket.io
+    npm install fs
     npm install body-parser
     npm install cookie-parser
     npm install express-session
+    npm install serve-index
 
 ___
 
@@ -65,14 +67,19 @@ Sent as application/json POST requests
 * `delay` - Seconds message should show before proceeding
 * `expire` - Seconds before message should expire
 * `type` - Defines the message type
-* `urgent` - Will override current message
 * `url` - URL Relevant to the type. (youtube video etc.)
+* `priority` - See Priority section below
 
-If `0` is used for `expire`, it will be treated as infinite (or in the case of media (youtube etc.), when it ends).
+If `0` is used for `expire`, it will be treated as infinite.
+
+#### Priority
+* 3 - Override - Display Immediately
+* 2 - Next - Appear after current slides
+* 1 - Add - Add to slide loop
 
 ### Other
 
-####Sounds
+#### Sounds
 * [204424 jaraxe alarm 3][jaraxe alarm 3]
 
 
