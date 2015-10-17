@@ -257,12 +257,12 @@ function tick() {
 	var state = window.state;
 	//tickDebug(state, timeNow);
 	
-	if (!state.isSlideshow && (state.slideshowEnded + parseInt(state.settings.slideshowFrequency)) <= timeNow) {
+	if (!state.isSlideshow && (state.slideshowEnded + parseInt(state.settings.slideshowFrequency, 10)) <= timeNow) {
 		state.isSlideshow = true;
 		state.slideshowStarted = Math.floor(Date.now() / 1000);
 	}
-	else if (parseInt(state.settings.slideshowDuration) != 0) {
-		if (state.isSlideshow && (state.slideshowStarted + parseInt(state.settings.slideshowDuration)) <= timeNow) {
+	else if (parseInt(state.settings.slideshowDuration, 10) != 0) {
+		if (state.isSlideshow && (state.slideshowStarted + parseInt(state.settings.slideshowDuration, 10)) <= timeNow) {
 			state.isSlideshow = false;
 			state.lastSlide = -1;
 			state.slideshowEnded = Math.floor(Date.now() / 1000);
@@ -271,11 +271,10 @@ function tick() {
 		}
 	}
 	
-	
 	if (state.isSlideshow) {
 		var found = false;
 		
-		if (state.lastSlide !== -1 && (state.currentSlideStart + parseInt(state.messages[state.lastSlide].delay)) > timeNow) {
+		if (state.lastSlide !== -1 && (state.currentSlideStart + state.messages[state.lastSlide].delay) > timeNow) {
 			found = true;
 		}
 		
