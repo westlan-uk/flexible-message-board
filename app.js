@@ -9,7 +9,9 @@ s.http = require('http');
 s.express = require('express');
 s.app = s.express();
 s.httpServer = s.http.createServer(s.app);
+s.serveIndex = require('serve-index');
 s.io = require('socket.io').listen(s.httpServer, { log: true });
+s.fs = require('fs');
 s.bodyParser = require('body-parser');
 s.cookieParser = require('cookie-parser');
 s.expressSession = require('express-session');
@@ -19,6 +21,7 @@ s.urlencodedParser = (s.bodyParser.urlencoded({ extended: false }));
 s.settings = require("./settings.js").settings;
 
 s.app.use(s.express.static(__dirname + '/public'));
+s.app.use('/js/plugins', s.serveIndex(__dirname + '/public/js/plugins'));
 s.app.use(s.cookieParser());
 s.app.use(s.expressSession({
     secret: 'fmbforwestlan',
@@ -28,6 +31,7 @@ s.app.use(s.expressSession({
 
 s.routes = require('./routes.js').Route(s);
 
+s.plugin = require('./Plugin.js').Plugin(s);
 
 s.screen = require('./Screen.js').Screen(s, s.settings);
 
@@ -44,20 +48,10 @@ s.io.sockets.on('connection', function(socket) {
 });
 
 function dumpCurrentConnections() {
-    console.log("Connections: " + s.connections.length)
-    s.connections.forEach(function(connectionHandler) {
-        console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected);
-    });
+	console.log("Connections: " + s.connections.length)
+	s.connections.forEach(function(connectionHandler) {
+		console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected);
+	});
 }
 
-try {
-	messages = require('fs').readFileSync('./messages.js', 'utf-8');
-	messages = JSON.parse(messages)
-
-	console.log(messages);
-
-	messages.forEach(s.screen.addMessage);
-} catch (err) {
-	console.log("could not load default messages", err);
-}
-
+s.settings.defaultMessages.forEach(s.screen.addMessage);
