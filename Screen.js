@@ -32,13 +32,11 @@ function Screen(server) {
     };
 
 	this.saveMessages = function() {
-		console.log("save messages");
 		var fs = require('fs');
 		var extend = require('util')._extend
 
 		messagesToSave = [];
 		self.messages.forEach(function(msg) {
-			console.log(msg.expire);
 			if (msg.expire == 0 || msg.expire == null || Number.isNaN(msg.expire)) {
 				messagesToSave.push(msg);
 			}
