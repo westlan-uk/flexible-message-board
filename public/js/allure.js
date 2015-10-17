@@ -7,7 +7,7 @@ Array.prototype.notEmpty = function() {
 };
 
 Array.prototype.lastItem = function() {
-	return this.items[this.length - 1];
+	return this[this.length - 1];
 };
 
 
