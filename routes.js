@@ -99,8 +99,8 @@ function Route(s) {
             s.screen.processMessage({
                 type: "slide",
                 content: req.body.content,
-                expire: req.body.expire,
-                delay: req.body.delay
+                expire: parseInt(req.body.expire, 10),
+                delay: parseInt(req.body.delay, 10)
             });
         }
         
@@ -138,8 +138,8 @@ function Route(s) {
             s.screen.processMessage({
                 type: "tick",
                 content: req.body.content,
-                expire: s.settings.shoutoutExpiry,
-                delay: s.settings.shoutoutDuration
+                expire: parseInt(s.settings.shoutoutExpiry, 10),
+                delay: parseInt(s.settings.shoutoutDuration, 10)
             });
         }
         
