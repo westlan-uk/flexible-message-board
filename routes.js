@@ -119,6 +119,7 @@ function Route(s) {
                 if (message.id === id) {
                     success = true;
                     s.screen.removeMessage(message);
+                    s.screen.sendExpireNotice(id);
                 }
             });
         }
