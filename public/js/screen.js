@@ -143,9 +143,12 @@ function ConnectionHandler() {
 		});
 		
 		self.socket.on('messages', function(data) {
-			window.state.ui.renderTick(data.message);
-			window.state.ticksShown.push(data.message.id);
-			window.state.sound.play();
+			if (data.type === 'tick') {
+				window.state.ui.renderTick(data.message);
+				window.state.ticksShown.push(data.message.id);
+				window.state.sound.play();
+			}
+			
 			window.state.messages.push(data.message);
 		});
 		
