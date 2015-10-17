@@ -28,7 +28,22 @@ function Screen(server) {
         }
         
         self.messages.push(message);
+		self.saveMessages();
     };
+
+	this.saveMessages = function() {
+		var fs = require('fs');
+		var extend = require('util')._extend
+
+		messagesToSave = [];
+		self.messages.forEach(function(msg) {
+			if (msg.expire == 0 || msg.expire == null || Number.isNaN(msg.expire)) {
+				messagesToSave.push(msg);
+			}
+		});
+
+		fs.writeFile("messages.js", JSON.stringify(messagesToSave, null, 4));
+	}
     
     this.updateSettings = function() {
         this.emitMessagesToEveryone('settings', { settings: settings });
