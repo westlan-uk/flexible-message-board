@@ -103,6 +103,8 @@ function Route(s) {
                 delay: req.body.delay
             });
         }
+        
+        res.redirect('/control/admin?success=' + success);
     });
     
     s.app.get('/slide/delete', s.urlencodedParser, function(req, res) {
