@@ -143,13 +143,49 @@ function ConnectionHandler() {
 		});
 		
 		self.socket.on('messages', function(data) {
+			var state = window.state;
+	console.log(data.message);
 			if (data.message.type === 'tick') {
-				window.state.ui.renderTick(data.message);
-				window.state.ticksShown.push(data.message.id);
-				window.state.sound.play();
+				state.ui.renderTick(data.message);
+				state.ticksShown.push(data.message.id);
+				state.sound.play();
+				
+				state.messages.push(data.message);
 			}
-			
-			window.state.messages.push(data.message);
+			else {
+				if (data.message.priority === 3) {
+					var index = state.lastSlide - 1;
+					
+					if (index !== undefined) {
+						state.messages.splice(index, 0, data.message);
+					}
+					else {
+						state.messages.push(data.message);
+					}
+					
+					if (! window.plugin.loaded.hasOwnProperty( data.message.type )) {
+						state.ui.renderSlide(data.message);
+						state.lastSlide = state.messages.indexOf(data.message);
+						state.currentSlideStart = Math.floor(Date.now() / 1000);
+					}
+					else {
+						window.plugin.loaded[ data.message.type ].renderScreen( data.message );
+					}
+				}
+				else if (data.message.priority === 2) {
+					var index = state.lastSlide + 1;
+					
+					if (index !== undefined) {
+						state.messages.splice(index, 0, data.message);
+					}
+					else {
+						state.messages.push(data.message);
+					}
+				}
+				else if (data.message.priority === 1) {
+					state.messages.push(data.message);
+				}
+			}
 		});
 		
 		self.socket.on('settings', function (data) {
@@ -170,33 +206,6 @@ function ConnectionHandler() {
 				}
 			});
 		});
-		
-		/*self.socket.on('messages', function(data) {
-			console.log('Updating Settings');
-			
-			var oldLayout = window.state.settings.layout;
-			
-			window.state.settings = data.settings;
-			
-			if (oldLayout !== window.state.settings.layout) {
-				window.state.ui.updateFrames();
-			}
-			
-			window.state.updateState();
-			
-			
-			console.log('Recv Messages', data);
-			window.state.messages = data.messages;
-			
-			data.messages.forEach(function(message) {
-				// Only immediately process for tick
-				if (message.type == 'tick' && window.state.ticksShown.indexOf(message.id) === -1) {
-					window.state.ui.renderTick(message);
-					window.state.ticksShown.push(message.id);
-					window.state.sound.play();
-				}
-			});
-		});*/
 	};
 	
 	this.init = function() {
@@ -212,6 +221,8 @@ function State() {
 	this.sound = new Sound();
     this.messages = [];
     this.settings = [];
+    
+    this.intervalId;
     
     /* Slideshow */
     this.isSlideshow = true;
@@ -230,7 +241,71 @@ function State() {
 		}
 	};
 	
+	this.getLatestSlide = function() {
+		for (var i = (this.lastSlide + 1); i < this.messages.length; i++) {
+			if (this.messages[i].type !== 'tick') {
+				return this.messages[i];
+			}
+		}
+		
+		return null;
+	};
+	
+	this.startInterval = function() {
+		window.state.intervalId = setInterval(tick, 2000); // ms between checks
+	};
+	
+	this.endInterval = function() {
+		if (this.intervalId !== undefined) {
+			window.clearInterval(this.intervalId);
+			this.intervalId = undefined;
+		}
+	};
+	
 	return this;
+}
+
+function Plugin() {
+	this.loaded = {};
+	
+	this.loadPlugins = function() {
+		(function($) {
+			/*
+			 * $.import_js() helper (for JavaScript importing within JavaScript code).
+			 */
+			$.extend(true,
+			{
+				import_js : function(script)
+				{
+					$("head").append('<script type="text/javascript" src="' + script + '"></script>');
+				}
+			});
+		})(jQuery);
+		
+		var dir = "/js/plugins";
+		
+	    var fileextension=".js";
+		$.ajax({
+			//This will retrieve the contents of the folder
+			url: dir,
+			success: function (data) {
+				//Lsit all js file names in the page
+				$(data).find("a:contains(" + fileextension + ")").each(function () {
+					var filename = this.href.replace(window.location.host, "");
+					
+					if(filename.indexOf("/") != -1) {
+						filename = filename.substring(filename.lastIndexOf("/") + 1);
+					}
+					
+					$.import_js(dir + '/' + filename);
+					
+					filename = filename.substring(0, filename.lastIndexOf("."));
+					console.log('Plugin Available: ' + filename);
+					window.plugin.loaded[filename] = new window[filename];
+				});
+			}
+		});
+	};
 }
 
 function init() {
@@ -239,7 +314,10 @@ function init() {
 	window.state.connectionHandler.init();
 	window.state.sound.init();
 	
-	setInterval(tick, 2000); // ms between checks
+	window.plugin = new Plugin();
+	window.plugin.loadPlugins();
+	
+	window.state.startInterval();
 }
 
 function tickDebug(state, timeNow) {
@@ -278,42 +356,31 @@ function tick() {
 			found = true;
 		}
 		
-		this.getLatestSlide = function() {
-			for (var i = (state.lastSlide + 1); i < state.messages.length; i++) {
-				if (state.messages[i].type == 'slide') {
-					return state.messages[i];
-				}
-			}
-			
-			return null;
-		};
-		
 		if (!found) {
 			if ((state.lastSlide + 1) >= state.messages.length) {
 				state.lastSlide = -1;
 			}
 			
-			var message = this.getLatestSlide();
+			var message = state.getLatestSlide();
 			
 			if (message !== null) {
-				state.ui.renderSlide(message);
-				state.lastSlide = state.messages.indexOf(message);
-				state.currentSlideStart = Math.floor(Date.now() / 1000);
+				
+				if (message.type !== 'slide') {
+					if (! window.plugin.loaded.hasOwnProperty( message.type )) {
+						state.ui.renderSlide(message);
+						state.lastSlide = state.messages.indexOf(message);
+						state.currentSlideStart = Math.floor(Date.now() / 1000);
+					}
+					else {
+						window.plugin.loaded[ message.type ].renderScreen( message );
+					}
+				}
+				else {
+					state.ui.renderSlide(message);
+					state.lastSlide = state.messages.indexOf(message);
+					state.currentSlideStart = Math.floor(Date.now() / 1000);
+				}
 			}
 		}
 	}
-	
-	//if (state.messages.notEmpty()) {
-	//	nextMessage = state.messages.lastItem();
-	//} else {
-	//	return;
-	//}
-	
-	//console.log(nextMessage);
-	
-	//if ((timeNow - currentMsgStart) >= nextMessage.delay) {
-	//	console.log('Display Next', nextMessage);
-	//	
-	//	displayMessage(nextMessage);
-	//}
 }

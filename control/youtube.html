@@ -11,9 +11,9 @@
     	    <div id="head" class="col-md-10">
     	        <h1><a class="nounderline" href="/control">FMB</a></h1>
     	        <ul class="nav nav-pills">
-    	        	<li role="presentation" class="active"><a href="/control">Home</a></li>
+    	        	<li role="presentation"><a href="/control">Home</a></li>
     	        	<li role="presentation"><a href="/control/shoutout">Shoutout</a></li>
-    	        	<li role="presentation"><a href="/control/youtube">YouTube</a></li>
+    	        	<li role="presentation" class="active"><a href="/control/youtube">YouTube</a></li>
     	        	<li role="presentation" class="disabled disabled-admin"><a href="/control/admin">Admin</a></li>
     	        </ul>
     	    </div>
@@ -28,7 +28,16 @@
     	
     	<div class="row">
     		<div id="content" class="col-md-12">
-    			
+    			<form class="submission" action="/youtube" method="POST">
+    				<img src="/img/youtubeid.png" />
+    				<br />
+    				<br />
+    				<div class="form-group">
+    					<label class="col-md-1" for="watch">YouTube Video ID</label>
+						<input type="text" name="watch" class="form-control" required />
+    				</div>
+    				<button type="submit" class="btn btn-default submitBtn">Submit</button>
+    			</form>
     		</div>
     	</div>
     	
@@ -38,7 +47,7 @@
     		<div id="login" class="col-md-2 col-md-push-10">
     			<form id="adminLogin" action="/control/admin" method="POST">
 	    			<div class="input-group">
-						<input type="password" class="form-control" name="password" placeholder="Admin Code" required="required" />
+						<input type="password" class="form-control" name="password" placeholder="Admin Code" required />
 						<span class="input-group-btn">
 							<button id="loginButton" class="btn btn-default" type="submit">Login</button>
 						</span>

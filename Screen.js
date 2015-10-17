@@ -27,23 +27,8 @@ function Screen(server) {
             message.id = settings.id++;
         }
         
-        self.messages.push(message);
-		self.saveMessages();
+		self.messages.push(message);
     };
-
-	this.saveMessages = function() {
-		var fs = require('fs');
-		var extend = require('util')._extend
-
-		messagesToSave = [];
-		self.messages.forEach(function(msg) {
-			if (msg.expire == 0 || msg.expire == null || Number.isNaN(msg.expire)) {
-				messagesToSave.push(msg);
-			}
-		});
-
-		fs.writeFile("messages.js", JSON.stringify(messagesToSave, null, 4));
-	}
     
     this.updateSettings = function() {
         this.emitMessagesToEveryone('settings', { settings: settings });
@@ -61,6 +46,10 @@ function Screen(server) {
         if (message.type !== undefined) {
             message.added = Math.floor(Date.now() / 1000);
             message.id = settings.id++;
+            
+            if (message.priority === undefined) {
+                message.priority = 1;
+            }
             
             self.addMessage(message);
             
