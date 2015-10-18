@@ -54,4 +54,13 @@ function dumpCurrentConnections() {
 	});
 }
 
-s.settings.defaultMessages.forEach(s.screen.addMessage);
+try {
+    var messages = require('fs').readFileSync('./messages.js', 'utf-8');
+    messages = JSON.parse(messages)
+
+    console.log(messages);
+
+    messages.forEach(s.screen.addMessage);
+} catch (err) {
+    console.log("could not load default messages", err);
+}
