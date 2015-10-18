@@ -27,7 +27,23 @@ function Screen(server) {
             message.id = settings.id++;
         }
         
-		self.messages.push(message);
+        self.messages.push(message);
+        self.saveMessages();
+    };
+    
+    this.saveMessages = function() {
+        console.log("save messages");
+        var extend = require('util')._extend;
+        
+        var messagesToSave = [];
+        self.messages.forEach(function(msg) {
+            console.log(msg.expire);
+            if (msg.expire == 0 || msg.expire == null || Number.isNaN(msg.expire)) {
+                messagesToSave.push(msg);
+            }
+        });
+        
+        server.fs.writeFile("messages.js", JSON.stringify(messagesToSave, null, 4));
     };
     
     this.updateSettings = function() {
