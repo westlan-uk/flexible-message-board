@@ -163,13 +163,13 @@ function ConnectionHandler() {
 						state.messages.push(data.message);
 					}
 					
-					if (! window.plugin.loaded.hasOwnProperty( data.message.type )) {
+					if (window.plugin.loaded.hasOwnProperty( data.message.type )) {
+                        window.plugin.loaded[ data.message.type ].renderScreen( data.message );
+					}
+					else {
 						state.ui.renderSlide(data.message);
 						state.lastSlide = state.messages.indexOf(data.message);
 						state.currentSlideStart = Math.floor(Date.now() / 1000);
-					}
-					else {
-						window.plugin.loaded[ data.message.type ].renderScreen( data.message );
 					}
 				}
 				else if (data.message.priority === 2) {
