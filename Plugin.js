@@ -10,6 +10,7 @@ function Plugin(s) {
             var pluginInit = require(dir+file).initialise(s);
             
             registered.push(pluginName, pluginInit);
+            s.settings[pluginName + 'Enabled'] = false;
             console.log('Registered Plugin: ' + pluginName);
         });
     });

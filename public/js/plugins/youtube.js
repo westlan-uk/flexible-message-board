@@ -22,8 +22,8 @@ var youtube = function() {
             console.log(message.content);
             
             player = new YT.Player('slideshow', {
-                width: '1280',
-                height: '680',
+                width: screen.width,
+                height: screen.height,
                 videoId: message.content,
                 events: {
                     'onReady': window.onPlayerReady,
