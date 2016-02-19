@@ -46,7 +46,7 @@ function routes(s) {
     });
     
     s.app.post('/youtube', s.urlencodedParser, function (req, res) {
-        var ip = req.headers['x-forwarded-for'];
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         console.log('YouTube submitted from ip: ' + ip);
         
         var success = false;
