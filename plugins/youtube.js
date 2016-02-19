@@ -11,6 +11,28 @@ function routes(s) {
         res.sendFile(s.path.join(__dirname, '../control/youtube.html'));
     });
     
+    s.app.get('/control/youtube/delete') function (req, res) {
+        var id = req.param.id;
+        var success = false;
+        
+        var message;
+        
+        s.settings.youtube.moderationQueue.forEach(function(video) {
+            if (video.content == id) {
+                message = video;
+            }
+        });
+        
+        var index = self.messages.indexOf(message);
+        
+        if (index !== -1) {
+            s.settings.youtube.moderationQueue.splice(index, 1);
+            success = true;
+        }
+        
+        res.redirect('/control/admin?success=' + success);
+    });
+    
     s.app.get('/control/admin/youtube', function(req, res) {
         res.json({ submissions: s.settings.youtube.moderationQueue });
     });
@@ -33,11 +55,21 @@ function routes(s) {
                 success = true;
             }
             
-            s.screen.processMessage({
+            var ytMessage = {
                 type: 'youtube',
                 content: req.query.id,
                 priority: parseInt(req.body.priority, 10),
-            });
+                added: Math.floor(Date.now() / 1000),
+                id: s.settings.id++,
+            };
+            
+            s.screen.emitMessagesToEveryone('messages', { message: message });
+            
+            /*s.screen.processMessage({
+                type: 'youtube',
+                content: req.query.id,
+                priority: parseInt(req.body.priority, 10),
+            });*/
             
             s.screen.updateSettings();
         }
