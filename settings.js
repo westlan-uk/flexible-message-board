@@ -8,33 +8,7 @@ settings = {
     shoutoutDuration: 30,
     shoutoutExpiry: 30,
     expiryCheckInterval: 20,
-	adminPassword: "fmb",
-    defaultMessages: [
-        {
-            id: 0,
-            type: 'slide',
-            content: '<p>Hello World</p>',
-            expire: 10,
-            delay: 10,
-            added: 0
-        },
-        {
-            id: 0,
-            type: 'slide',
-            content: '<p>Welcome to WestLAN!</p><p>You can find the wiki and help at wiki.westlan.co.uk</p>',
-            expire: 0,
-            delay: 10,
-            added: 0
-        },
-        {
-            id: 0,
-            type: 'slide',
-            content: '<p>If you want to create a shoutout, go to http://projector/control/shoutout</p>',
-            expire: 0,
-            delay: 15,
-            added: 0
-        }
-    ]
+	adminPassword: "fmb"
 };
 
 settings.port = function() {
