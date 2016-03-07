@@ -33,6 +33,16 @@ p.message {
 	margin: auto;
 }
 
+header {
+	background-color: black;
+	color: white;
+	display: flex;
+}
+
+h1 {
+	flex: 1;
+}
+
 #frame {
     width: 100%;
     height: 100%;
@@ -42,9 +52,9 @@ p.message {
 	font-family: monospace;
 	font-weight: bold;
 	color: lightskyblue;
-	position: absolute;
-	right: 1em;
-	top: 1em;
+	text-align: right;
+	flex: 1;
+	padding: 1em;
 }
 
 #status.bad {
@@ -75,6 +85,10 @@ p.message {
 
 .row div {
 	padding: 0;
+}
+
+#ticker {
+	background-color: gray;
 }
 
 .row #ticker {

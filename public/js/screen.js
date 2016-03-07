@@ -11,7 +11,6 @@ function UserInterface() {
 		
 		if (window.state.isSlideshow) {
 			console.log('Is Slideshow');
-			this.hideHeader();
 			
 			if (layout == "0") {
 				frame = $('<div>').addClass('row').addClass('full-height');
@@ -29,7 +28,6 @@ function UserInterface() {
 		}
 		else {
 			console.log('Is Ticker');
-			this.showHeader();
 			frame = $('<div>').attr('id', 'ticker').addClass('full-height');
 		}
 		
@@ -72,14 +70,14 @@ function UserInterface() {
 	this.showHeader = function() {
 		if (window.state.ui.headerVisible === false) {
 			window.state.ui.headerVisible = true;
-			$('#header').toggle(2000);
+			$('#header').slideDown(2000);
 		}
 	};
 	
 	this.hideHeader = function() {
 		if (window.state.ui.headerVisible === true) {
 			window.state.ui.headerVisible = false;
-			$('#header').toggle(2000);
+			$('#header').slideUp(2000);
 		}
 	};
 
@@ -127,10 +125,12 @@ function ConnectionHandler() {
 	
 	this.setupSocketHandlers = function() {
 		self.socket.on('connect', function() {
+			window.state.ui.hideHeader();
 			window.state.ui.setStatus('Connected', 'good');
 		});
 		
 		self.socket.on('disconnect', function() {
+			window.state.ui.showHeader();
 			window.state.ui.setStatus('Disconnected', 'bad');
 			window.state.ui.resetFrame();
 		});
