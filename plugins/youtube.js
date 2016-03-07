@@ -11,7 +11,7 @@ function routes(s) {
         res.sendFile(s.path.join(__dirname, '../control/youtube.html'));
     });
     
-    s.app.get('/control/youtube/delete') function (req, res) {
+    s.app.get('/control/youtube/delete', function (req, res) {
         var id = req.param.id;
         var success = false;
         
