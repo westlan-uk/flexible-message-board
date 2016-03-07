@@ -21,7 +21,7 @@ ___
 ###Usage
 
 * Run `app.js` using NodeJS.
-    * Format: `node app.js {adminPassword}`
+    * Format: `node app.js`
     * Example: `node app.js admin1234`
 * Go to `/` to view the output of FMB.
 * Go to `/control` to control the output.

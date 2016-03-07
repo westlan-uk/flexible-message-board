@@ -4,6 +4,10 @@ function Route(s) {
     s.app.get('/', function(req, res) {
         res.sendFile(s.path.join(__dirname, 'screen.html'));
     });
+
+	s.app.get('/dumpMessages', function(req, res) {
+		console.log(s.screen.messages);
+	});
     
     
     s.app.get('/control', function(req, res) {
@@ -34,7 +38,7 @@ function Route(s) {
         if (req.body.hasOwnProperty('password')) {
             var pass = req.body.password;
             
-            console.log("Login attempt: " + pass + " against: " + s.settings.adminPassword);
+            console.log("Login attempt using password: " + pass + ", but the admin password is: '" + s.settings.adminPassword + "' !");
             
             if (pass == s.settings.adminPassword) {
                 console.log('Client logged in');

@@ -8,6 +8,7 @@ settings = {
     shoutoutDuration: 30,
     shoutoutExpiry: 30,
     expiryCheckInterval: 20,
+	adminPassword: "fmb",
     defaultMessages: [
         {
             id: 0,
@@ -49,8 +50,6 @@ settings.port = function() {
 settings.id = function() {
     return ++settings._id;
 }();
-
-settings.adminPassword = process.argv.slice(2); // First cli arg
 
 module.exports = {
     settings: settings
