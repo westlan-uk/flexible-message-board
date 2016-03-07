@@ -58,7 +58,7 @@ try {
     var messages = require('fs').readFileSync('./messages.js', 'utf-8');
     messages = JSON.parse(messages)
 
-    console.log(messages);
+    console.log("Loaded messages are: \n" + messages);
 
     messages.forEach(s.screen.addMessage);
 } catch (err) {
