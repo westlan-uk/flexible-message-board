@@ -103,6 +103,10 @@ function Screen(server) {
         });
     };
 
+	this.shouldPlayAudioNotification = function(message) {
+		return false;
+	};
+
     setInterval(this.removeExpiredMessages, settings.expiryCheckInterval * 1000);
 
     return this;

@@ -143,6 +143,7 @@ function Route(s) {
             s.screen.processMessage({
                 type: "tick",
                 content: req.body.content,
+				playAudioNotification: s.screen.shouldPlayAudioNotification(),
                 expire: parseInt(s.settings.shoutoutExpiry, 10),
                 delay: parseInt(s.settings.shoutoutDuration, 10)
             });

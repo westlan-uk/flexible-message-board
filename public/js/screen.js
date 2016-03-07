@@ -144,11 +144,16 @@ function ConnectionHandler() {
 		
 		self.socket.on('messages', function(data) {
 			var state = window.state;
-	console.log(data.message);
+
+			console.log(data.message);
+
 			if (data.message.type === 'tick') {
 				state.ui.renderTick(data.message);
 				state.ticksShown.push(data.message.id);
-				state.sound.play();
+
+				if (data.message.playAudioNotification) {
+					state.sound.play();
+				}
 				
 				state.messages.push(data.message);
 			}
