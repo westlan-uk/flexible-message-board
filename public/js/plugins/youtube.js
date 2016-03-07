@@ -22,8 +22,8 @@ var youtube = function() {
             console.log(message.content);
             
             player = new YT.Player('slideshow', {
-                width: screen.width,
-                height: screen.height,
+                width: $('#slideshow').width(),
+                height: $('#slideshow').height(),
                 videoId: message.content,
                 events: {
                     'onReady': window.onPlayerReady,
@@ -86,7 +86,7 @@ var youtube = function() {
                                     '</select>' +
                                     '<br />' +
                                     '<br />' +
-                                    '<p><a href="/youtube/delete?id=' + submission.content + '" class="inline-delete">Delete</a>' +
+                                    '<p><a href="/control/youtube/delete?id=' + submission.content + '" class="inline-delete">Delete</a>' +
                                     '</p>' +
                                     '<button type="submit" class="btn btn-default submitBtn">Send to Screen</button>' +
                                 '</div>' +
