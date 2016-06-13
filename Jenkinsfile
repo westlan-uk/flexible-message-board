@@ -1,7 +1,7 @@
 node {
 	stage "Get deps"
-	make deps
+	sh "make deps"
 
 	stage "Test"
-	make tests
+	sh "make tests"
 }
