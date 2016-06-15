@@ -109,7 +109,7 @@ function UserInterface() {
 function Sound() {
 	this.init = function() {
 		var alarm = document.getElementById('alarm');
-		alarm.src = '/sounds/204424__jaraxe__alarm-3.wav';
+		alarm.src = '/sounds/inception.wav';
 	};
 	
 	this.play = function() {
