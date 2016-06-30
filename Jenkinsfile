@@ -1,8 +1,8 @@
 node {
 	stage "Get deps"
 	checkout scm
-	make deps
+	sh "make deps"
 
 	stage "Test"
-	make tests
+	sh "make tests"
 }
