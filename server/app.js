@@ -1,6 +1,6 @@
 #!/usr/bin/node 
 
-require("./public/js/allure.js");
+require("./allure.js");
 
 var s = {};
 
@@ -30,9 +30,7 @@ s.app.use(s.expressSession({
 }));
 
 s.routes = require('./routes.js').Route(s);
-
 s.plugin = require('./Plugin.js').Plugin(s);
-
 s.screen = require('./Screen.js').Screen(s, s.settings);
 
 s.httpServer.listen(s.settings.port);
@@ -46,13 +44,6 @@ s.io.sockets.on('connection', function(socket) {
     
     s.connections.push(handler);
 });
-
-function dumpCurrentConnections() {
-	console.log("Connections: " + s.connections.length)
-	s.connections.forEach(function(connectionHandler) {
-		console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected);
-	});
-}
 
 try {
     var messages = require('fs').readFileSync('./messages.js', 'utf-8');

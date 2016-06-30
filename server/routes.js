@@ -1,33 +1,44 @@
 function Route(s) {
     console.log('Declaring Default Routes');
+	publicDir = s.path.join(__dirname, '../public/');
+	controlDir = s.path.join(__dirname, 'control')
     
     s.app.get('/', function(req, res) {
-        res.sendFile(s.path.join(__dirname, 'screen.html'));
+        res.sendFile(s.path.join(publicDir, 'screen.html'));
     });
 
 	s.app.get('/dumpMessages', function(req, res) {
 		console.log(s.screen.messages);
 	});
+
+	s.app.get('/dumpConnections', function(req, res) {
+		console.log("Connections: " + s.connections.length)
+		s.connections.forEach(function(connectionHandler) {
+			console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected);
+		});
+
+		//res.write("Connections dumped.");
+	});
     
     
     s.app.get('/control', function(req, res) {
-        res.sendFile(s.path.join(__dirname, 'control/index.html'));
+        res.sendFile(s.path.join(controlDir, 'index.html'));
     });
     
     
     s.app.get('/control/shoutout', function(req, res) {
-        res.sendFile(s.path.join(__dirname, 'control/shoutout.html'));
+        res.sendFile(s.path.join(controlDir, 'shoutout.html'));
     });
     
     
     s.app.get('/control/slides', function(req, res) {
-        res.sendFile(s.path.join(__dirname, 'control/slides.html'));
+        res.sendFile(s.path.join(controlDir, 'slides.html'));
     });
     
     
     s.app.get('/control/admin', function(req, res) {
         if (req.session.adminPermission === true) {
-            res.sendFile(s.path.join(__dirname, 'control/admin.html'));
+            res.sendFile(s.path.join(controlDir, 'admin.html'));
         }
         else {
             res.redirect('/control');
@@ -43,7 +54,7 @@ function Route(s) {
             if (pass == s.settings.adminPassword) {
                 console.log('Client logged in');
                 req.session.adminPermission = true;
-                res.sendFile(s.path.join(__dirname, 'control/admin.html'));
+                res.sendFile(s.path.join(publicDir, 'control/admin.html'));
             }
         } else {
             res.json({ login: "failed" });
