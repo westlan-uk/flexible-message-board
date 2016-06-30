@@ -1,4 +1,4 @@
-require("../public/js/allure.js")
+require("../allure.js")
 
 module.exports = {
 	"isEmpty": function(test) {

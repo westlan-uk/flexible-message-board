@@ -11,7 +11,7 @@ deps:
 	npm install nodeunit
 
 tests:
-	nodeunit tests
+	nodeunit server/tests
 
 jsl:
 	find ! -name '*.min.js' -name '*.js' -exec jsl -nologo -process {} \;
