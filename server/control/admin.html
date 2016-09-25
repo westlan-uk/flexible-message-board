@@ -117,26 +117,42 @@
 				    					<h3 class="panel-title">Add New Slide</h3>
 				    				</div>
 				    				<div class="panel-body">
-				    					<div class="form-group form-group-sm col-md-12">
+				    					<div class="form-group form-group-sm">
 				    						<label for="content" class="control-label">Content</label>
-				    						<textarea rows="10" class="form-control" name="content" placeholder="HTML Here..." required></textarea>
+											<div class = "col-md-7">
+												<textarea rows="10" class="form-control" name="content" placeholder="HTML Here..." required></textarea>
+											</div>
+											<div class="col-md-5">
+												<p>Must be valid HTML, so it must have a root element like a P for paragraph, example;</p>
+												<blockquote> <tt>&lt;p&gt;This is an example of an &lt;b&gt;<b>awesome</b>&lt;/b&gt; slide!&lt;/p&gt;</tt>.</blockquote>
+												<p>Examples: <tt>&lt;b&gt;<b>bold</b>&lt;/b&gt;, &lt;span style = "color: red"&gt;<span style = "color: red">red text</span>&lt;/span&gt;</tt></p>
+											</div>
+				    					</div>
+
+				    					
+				    					<div class="form-group form-group-sm">
+				    						<label for="expire" class="col-md-1 control-label">Expire Time (seconds)</label>
+				    						<div class="col-md-6">
+				    							<input type="text" name="expire" class="form-control" required value = "0" />
+				    						</div>
+											<div class="col-md-5">
+												<p>How long until the slide is auto-deleted? Enter <strong>"0"</strong> and the slide will never be deleted.</p>
+												<p>Examples: <i>60 = 1 minute, 300 = 5 minutes, 900 = 15 minutes, 1800 = 30 minutes, 3600 = 1 hour</i></p>
+											</div>
 				    					</div>
 				    					
 				    					<div class="form-group form-group-sm">
-				    						<label for="expire" class="col-md-1 control-label">Expire Time (s)</label>
-				    						<div class="col-md-11">
-				    							<input type="text" name="expire" class="form-control" required/>
+				    						<label for="delay" class="col-md-1 control-label">Display Time (seconds)</label>
+				    						<div class="col-md-6">
+				    							<input type="text" name="delay" class="form-control" required value = "15"/>
 				    						</div>
+											<div class="col-md-5">
+												<p>How long to display this slide before going to the next one?</p>
+												<p>Examples: <i>60 = 1 minute, 300 = 5 minutes, 900 = 15 minutes, 1800 = 30 minutes, 3600 = 1 hour</i></p>
+											</div>
 				    					</div>
 				    					
-				    					<div class="form-group form-group-sm">
-				    						<label for="delay" class="col-md-1 control-label">Display Time (s)</label>
-				    						<div class="col-md-11">
-				    							<input type="text" name="delay" class="form-control" required />
-				    						</div>
-				    					</div>
-				    					
-				    					<button type="submit" class="btn btn-default submitBtn">Save</button>
+				    					<button type="submit" class="btn btn-default submitBtn">Add Slide</button>
 				    				</div>
 				    			</div>
 			    			</form>
