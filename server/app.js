@@ -16,7 +16,7 @@ s.bodyParser = require('body-parser');
 s.cookieParser = require('cookie-parser');
 s.expressSession = require('express-session');
 s.jsonParser = s.bodyParser.json();
-s.urlencodedParser = (s.bodyParser.urlencoded({ extended: false }));
+s.urlencodedParser = (s.bodyParser.urlencoded({ extended: true }));
 
 s.settings = require("./settings.js").settings;
 
