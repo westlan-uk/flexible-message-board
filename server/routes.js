@@ -85,6 +85,7 @@ function Route(s) {
     
     s.app.post('/control/admin/refresh', function(req, res) {
         s.screen.forceRefresh();
+        res.redirect('/control');
     });
     
     s.app.get('/control/admin/slides', function(req, res) {
