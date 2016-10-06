@@ -1,7 +1,7 @@
 function Route(s) {
     console.log('Declaring Default Routes');
 	publicDir = s.path.join(__dirname, '../public/');
-	controlDir = s.path.join(__dirname, 'control')
+	controlDir = s.path.join(__dirname, '/../public/control')
     
     s.app.get('/', function(req, res) {
         res.sendFile(s.path.join(publicDir, 'screen.html'));

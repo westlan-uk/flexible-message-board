@@ -8,7 +8,7 @@ function routes(s) {
     console.log('Declaring YouTube Routes');
     
     s.app.get('/control/youtube', function (req, res) {
-        res.sendFile(s.path.join(__dirname, '../control/youtube.html'));
+        res.sendFile(s.path.join(__dirname, '/../../public/control/youtube.html'));
     });
     
     s.app.get('/control/youtube/delete', function (req, res) {
