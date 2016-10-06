@@ -23,7 +23,7 @@ function routes(s) {
             }
         });
         
-        var index = self.messages.indexOf(message);
+        var index = s.settings.youtube.moderationQueue.indexOf(message);
         
         if (index !== -1) {
             s.settings.youtube.moderationQueue.splice(index, 1);
@@ -63,7 +63,7 @@ function routes(s) {
                 id: s.settings.id++,
             };
             
-            s.screen.emitMessagesToEveryone('messages', { message: message });
+            s.screen.emitMessagesToEveryone('messages', { message: ytMessage });
             
             /*s.screen.processMessage({
                 type: 'youtube',
