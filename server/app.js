@@ -20,8 +20,8 @@ s.urlencodedParser = (s.bodyParser.urlencoded({ extended: false }));
 
 s.settings = require("./settings.js").settings;
 
-s.app.use(s.express.static(__dirname + '/public'));
-s.app.use('/js/plugins', s.serveIndex(__dirname + '/public/js/plugins'));
+s.app.use(s.express.static(__dirname + '/../public'));
+s.app.use('/js/plugins', s.serveIndex(__dirname + '/../public/js/plugins'));
 s.app.use(s.cookieParser());
 s.app.use(s.expressSession({
     secret: 'fmbforwestlan',
