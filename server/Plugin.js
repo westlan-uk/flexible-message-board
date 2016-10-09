@@ -1,5 +1,5 @@
 function Plugin(s) {
-    var dir = './plugins/';
+    var dir = __dirname + '/plugins/';
     var registered = [];
     
     s.fs.readdir(dir, function(err, files) {

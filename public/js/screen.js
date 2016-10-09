@@ -38,7 +38,7 @@ function UserInterface() {
 
 	this.renderSlide = function(message) {
 		this.updateFrames();
-		$('#slideshow').append( $('<div>').append($(message.content)).addClass('auto-margin'));
+		$('#slideshow').append( $('<div>').append(message.content).addClass('auto-margin'));
 	};
 	
 	this.renderTick = function(message) {
