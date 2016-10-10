@@ -4,26 +4,18 @@ var youtube = function() {
     
     this.renderScreen = function(message) {
         var state = window.state;
-        
+
+        state.messages.splice(state.messages.indexOf(message), 1);
+
         state.ui.resetFrame();
         $('#frame').append('<div id="slideshow">');
         
         state.endInterval();
         
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        
-        var player;
-        window.onYouTubeIframeAPIReady = function() {
-            console.log('api ready');
-            
-            console.log(message.content);
-            
-            player = new YT.Player('slideshow', {
-                width: $('#slideshow').width(),
-                height: $('#slideshow').height(),
+        function playVideo(id) {
+            window.ytPlayer = new YT.Player('slideshow', {
+                width: $('#frame').width(),
+                height: $('#frame').height(),
                 videoId: message.content,
                 events: {
                     'onReady': window.onPlayerReady,
@@ -31,6 +23,24 @@ var youtube = function() {
                     'onError': window.onPlayerError
                 }
             });
+        }
+
+
+        if (window.ytReady === undefined) {
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        } else {
+            window.ytPlayer.destroy();
+            playVideo(message.content);
+        }
+
+        window.onYouTubeIframeAPIReady = function() {
+            window.ytReady = true;
+            console.log('api ready');
+            
+            playVideo(message.content);
         }
         
         window.onPlayerReady = function(event) {
@@ -46,8 +56,7 @@ var youtube = function() {
         }
         
         window.stopVideo = function() {
-            player.stopVideo();
-            state.messages.splice(state.messages.indexOf(message), 1);
+            window.ytPlayer.stopVideo();
             state.startInterval();
         }
         

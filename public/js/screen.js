@@ -38,7 +38,16 @@ function UserInterface() {
 
 	this.renderSlide = function(message) {
 		this.updateFrames();
-		$('#slideshow').append( $('<div>').append($(message.content)).addClass('auto-margin'));
+		$('#slideshow').append( $('<div>').append(message.content).addClass('auto-margin'));
+	};
+
+	this.renderNoMessages = function() {
+		console.log("no messages");
+		if ($('#frame').contains('.noMessages')) {
+			return;
+		}
+
+		$('#frame').append('<div class = "noMessages">FMB is working, but has no messages! <br /><br />An admin should create some with the control panel!</div>');
 	};
 	
 	this.renderTick = function(message) {
@@ -118,7 +127,7 @@ function Sound() {
 	};
 }
 
-function ConnectionHandler() {
+function ServerConnectionHandler() {
 	var self = this;
 	
     this.socket = io.connect();
@@ -127,6 +136,10 @@ function ConnectionHandler() {
 		self.socket.on('connect', function() {
 			window.state.ui.hideHeader();
 			window.state.ui.setStatus('Connected', 'good');
+		});
+
+		self.socket.on('connecting', function() {
+			console.log("connecting");
 		});
 		
 		self.socket.on('disconnect', function() {
@@ -158,7 +171,8 @@ function ConnectionHandler() {
 				state.messages.push(data.message);
 			}
 			else {
-				if (data.message.priority === 3) {
+				switch (data.message.priority) {
+				case 3: 
 					var index = state.lastSlide - 1;
 					
 					if (index !== undefined) {
@@ -176,8 +190,7 @@ function ConnectionHandler() {
 						state.lastSlide = state.messages.indexOf(data.message);
 						state.currentSlideStart = Math.floor(Date.now() / 1000);
 					}
-				}
-				else if (data.message.priority === 2) {
+				case 2: 
 					var index = state.lastSlide + 1;
 					
 					if (index !== undefined) {
@@ -186,8 +199,7 @@ function ConnectionHandler() {
 					else {
 						state.messages.push(data.message);
 					}
-				}
-				else if (data.message.priority === 1) {
+				case 1:
 					state.messages.push(data.message);
 				}
 			}
@@ -221,7 +233,7 @@ function ConnectionHandler() {
 }
 
 function State() {
-	this.connectionHandler = new ConnectionHandler();
+	this.connectionHandler = new ServerConnectionHandler();
 	this.ui = new UserInterface();
 	this.sound = new Sound();
     this.messages = [];
@@ -385,6 +397,8 @@ function tick() {
 					state.lastSlide = state.messages.indexOf(message);
 					state.currentSlideStart = Math.floor(Date.now() / 1000);
 				}
+			} else {
+				window.state.ui.renderNoMessages();
 			}
 		}
 	}
