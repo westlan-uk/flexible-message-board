@@ -1,8 +1,10 @@
+config = require('./config.js')
+
 function Screen(server) {
     var self = this;
-    var settings = server.settings;
 
     this.messages = [];
+	this.clientSettings = config.readClientSettingsFromFile()
     
     this.emitMessagesToEveryone = function (socketName, data) {
         console.log("Sending messages to all connections, of which there are: " + server.connections.length);
@@ -24,7 +26,7 @@ function Screen(server) {
         }
         
         if (message.id !== undefined && message.id === 0) {
-            message.id = settings.id++;
+            message.id = require('uuid').v1();
         }
         
         self.messages.push(message);
@@ -47,11 +49,11 @@ function Screen(server) {
     };
     
     this.updateSettings = function() {
-        this.emitMessagesToEveryone('settings', { settings: settings });
+        this.emitMessagesToEveryone('clientSettings', { settings: self.clientSettings });
     };
     
     this.sendInitialData = function(connectionHandler) {
-        this.emitMessagesTo(connectionHandler, 'initialise', { messages: self.messages, settings: settings });
+        this.emitMessagesTo(connectionHandler, 'initialise', { messages: self.messages, settings: self.clientSettings });
     };
     
     this.forceRefresh = function(connectionHandler) {
@@ -61,7 +63,6 @@ function Screen(server) {
     this.processMessage = function(message) {
         if (message.type !== undefined) {
             message.added = Math.floor(Date.now() / 1000);
-            message.id = settings.id++;
             
             if (message.priority === undefined) {
                 message.priority = 1;
