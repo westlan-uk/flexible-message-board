@@ -1,4 +1,4 @@
-fs = reqire('fs')
+fs = require('fs')
 
 function PluginManager() {
     var dir = __dirname + '/plugins/';
