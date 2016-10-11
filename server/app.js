@@ -30,7 +30,7 @@ s.app.use(s.expressSession({
     saveUninitialized: false
 }));
 
-s.pluginManager = require('./PluginManager.js').PluginManager();
+s.pluginManager = require('./PluginManager.js').PluginManager(s);
 s.routes = require('./routes.js').Route(s);
 s.screen = require('./Screen.js').Screen(s);
 

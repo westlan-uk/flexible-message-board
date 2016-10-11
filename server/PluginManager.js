@@ -1,6 +1,6 @@
 fs = require('fs')
 
-function PluginManager() {
+function PluginManager(s) {
     var dir = __dirname + '/plugins/';
     var registered = [];
     

@@ -10,7 +10,7 @@ function Route(s) {
 	s.app.get('/dumpMessages', function(req, res) {
 		console.log(s.screen.messages);
 
-		res.json({message: "Messages dumped to console.})
+		res.json({message: "Messages dumped to console."})
 	});
 
 	s.app.get('/dumpConnections', function(req, res) {
@@ -19,7 +19,7 @@ function Route(s) {
 			console.log(" - " + connectionHandler.socket.conn.id + " / " + connectionHandler.ip + " disconnected?: " + connectionHandler.socket.disconnected);
 		});
 
-		res.json({message: "Connections dumped to console.})
+		res.json({message: "Connections dumped to console."})
 	});
     
     
