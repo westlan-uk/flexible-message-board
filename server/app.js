@@ -1,6 +1,7 @@
 #!/usr/bin/node 
 
 require("./allure.js");
+config = require('./config.js')
 
 var s = {};
 
@@ -18,7 +19,7 @@ s.expressSession = require('express-session');
 s.jsonParser = s.bodyParser.json();
 s.urlencodedParser = (s.bodyParser.urlencoded({ extended: true }));
 
-s.settings = require("./settings.js").settings;
+s.settings = config.readServerSettingsFromFile();
 
 s.app.use(s.express.static(__dirname + '/../public'));
 s.app.use('/js/plugins', s.serveIndex(__dirname + '/../public/js/plugins'));
@@ -29,9 +30,9 @@ s.app.use(s.expressSession({
     saveUninitialized: false
 }));
 
+s.pluginManager = require('./PluginManager.js').PluginManager();
 s.routes = require('./routes.js').Route(s);
-s.plugin = require('./Plugin.js').Plugin(s);
-s.screen = require('./Screen.js').Screen(s, s.settings);
+s.screen = require('./Screen.js').Screen(s);
 
 s.httpServer.listen(s.settings.port);
 console.log('Server started on port ' + s.settings.port);
@@ -45,13 +46,4 @@ s.io.sockets.on('connection', function(socket) {
     s.connections.push(handler);
 });
 
-try {
-    var messages = require('fs').readFileSync('./messages.js', 'utf-8');
-    messages = JSON.parse(messages)
-
-    console.log("Loaded messages are: \n" + messages);
-
-    messages.forEach(s.screen.addMessage);
-} catch (err) {
-    console.log("could not load default messages", err);
-}
+config.reloadMessagesFromFile(s);

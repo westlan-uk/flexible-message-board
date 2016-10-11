@@ -1,8 +1,10 @@
-function Plugin(s) {
+fs = reqire('fs')
+
+function PluginManager() {
     var dir = __dirname + '/plugins/';
     var registered = [];
     
-    s.fs.readdir(dir, function(err, files) {
+    fs.readdir(dir, function(err, files) {
         if (err) throw err;
         var c = 0;
         files.forEach(function(file) {
@@ -10,12 +12,11 @@ function Plugin(s) {
             var pluginInit = require(dir+file).initialise(s);
             
             registered.push(pluginName, pluginInit);
-            s.settings[pluginName + 'Enabled'] = false;
             console.log('Registered Plugin: ' + pluginName);
         });
     });
 }
 
 module.exports = {
-    Plugin: Plugin
+    PluginManager: PluginManager
 };

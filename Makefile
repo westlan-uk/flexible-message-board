@@ -2,6 +2,7 @@ default: deps tests
 
 deps:
 	npm install express
+	npm install uuid
 	npm install socket.io
 	npm install fs
 	npm install body-parser
