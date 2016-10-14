@@ -130,7 +130,7 @@ function Route(s) {
         var success = false;
         
         if (req.query.hasOwnProperty('id')) {
-            var id = parseInt(req.query.id);
+            var id = req.query.id;
             var ip = req.headers['x-forwarded-for'];
             console.log('Slide with id "' + id + '" being deleted from ip: ' + ip);
             
