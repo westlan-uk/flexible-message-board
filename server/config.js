@@ -37,7 +37,7 @@ function readJsonFile(filename) {
 	var config = require('fs').readFileSync(getFilePath(filename));
 	config = JSON.parse(config);
 
-	return config
+	return config;
 }
 
 function readClientSettingsFromFile() {
