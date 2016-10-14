@@ -108,7 +108,7 @@ function Screen(server) {
 		return false;
 	};
 
-    setInterval(this.removeExpiredMessages, settings.expiryCheckInterval * 1000);
+    setInterval(this.removeExpiredMessages, server.settings.expiryCheckInterval * 1000);
 
     return this;
 }
