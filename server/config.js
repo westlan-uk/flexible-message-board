@@ -77,6 +77,9 @@ function reloadMessagesFromFile(server) {
 }
 
 module.exports = {
-	getFilePath, readJsonFile, readServerSettingsFromFile, reloadMessagesFromFile,
-	readClientSettingsFromFile
+	getFilePath: getFilePath,
+	readJsonFile: readJsonFile,
+	readServerSettingsFromFile: readServerSettingsFromFile,
+	reloadMessagesFromFile: reloadMessagesFromFile,
+	readClientSettingsFromFile: readClientSettingsFromFile
 }
