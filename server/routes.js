@@ -115,6 +115,7 @@ function Route(s) {
             success = true;
             
             s.screen.processMessage({
+                id: 0,
                 type: "slide",
                 content: req.body.content,
                 expire: parseInt(req.body.expire, 10),
