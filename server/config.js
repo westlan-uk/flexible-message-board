@@ -34,10 +34,22 @@ function getFilePath(filename) {
 }
 
 function readJsonFile(filename) {
-	var config = require('fs').readFileSync(getFilePath(filename));
+	filepath = getFilePath(filename);
+
+	console.log("Reading:", filepath)
+
+	var config = require('fs').readFileSync(filepath);
 	config = JSON.parse(config);
 
 	return config;
+}
+
+function writeJsonFile(filename, content) {
+	filepath = getFilePath(filename);
+
+	console.log("Writing:", filepath)
+
+        server.fs.writeFile(filepath, JSON.stringify(content, null, 4));
 }
 
 function readClientSettingsFromFile() {
@@ -76,10 +88,15 @@ function reloadMessagesFromFile(server) {
 	}
 }
 
+function saveMessagesToFile(messages) {
+	writeJsonFile("messages.json", messages);
+}
+
 module.exports = {
 	getFilePath: getFilePath,
 	readJsonFile: readJsonFile,
 	readServerSettingsFromFile: readServerSettingsFromFile,
 	reloadMessagesFromFile: reloadMessagesFromFile,
-	readClientSettingsFromFile: readClientSettingsFromFile
+	readClientSettingsFromFile: readClientSettingsFromFile,
+	saveMessagesToFile: saveMessagesToFile
 }

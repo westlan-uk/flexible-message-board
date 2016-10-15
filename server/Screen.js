@@ -45,7 +45,7 @@ function Screen(server) {
             }
         });
         
-        server.fs.writeFile("messages.js", JSON.stringify(messagesToSave, null, 4));
+	config.saveMessagesFile(messagesToSave);
     };
     
     this.updateSettings = function() {
