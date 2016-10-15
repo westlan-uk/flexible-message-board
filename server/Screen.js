@@ -45,7 +45,7 @@ function Screen(server) {
             }
         });
         
-	config.saveMessagesFile(messagesToSave);
+	config.saveMessagesToFile(messagesToSave);
     };
     
     this.updateSettings = function() {
