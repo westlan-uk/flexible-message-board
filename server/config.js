@@ -49,7 +49,7 @@ function writeJsonFile(filename, content) {
 
 	console.log("Writing:", filepath)
 
-        server.fs.writeFile(filepath, JSON.stringify(content, null, 4));
+        require('fs').writeFile(filepath, JSON.stringify(content, null, 4));
 }
 
 function readClientSettingsFromFile() {
