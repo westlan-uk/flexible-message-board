@@ -1,14 +1,11 @@
 function isDir(dir) {
-	fs = require('fs');
-	
 	try {
-		statResult = fs.lstatSync(dir)
+		var statResult = require('fs').lstatSync(dir);
 
 		if (statResult.isDirectory()) {
 			return true;
 		}
-	} catch (e) {
-	}
+	} catch (e) {}
 
 	return false;
 }
@@ -16,7 +13,7 @@ function isDir(dir) {
 // Short function for now, but makes it easy to relocate configuration
 // and have multiple sources
 function getFilePath(filename) {
-	configdir = '.';
+	var configdir = '.';
 
 	if (isDir(__dirname + '/configuration/')) {
 		configdir = __dirname + '/configuration/';
@@ -34,69 +31,99 @@ function getFilePath(filename) {
 }
 
 function readJsonFile(filename) {
-	filepath = getFilePath(filename);
+	var filepath = getFilePath(filename);
 
-	console.log("Reading:", filepath)
+	console.log('Reading: ', filepath);
 
 	var config = require('fs').readFileSync(filepath);
-	config = JSON.parse(config);
-
-	return config;
+	return JSON.parse(config);
 }
 
 function writeJsonFile(filename, content) {
-	filepath = getFilePath(filename);
+	var filepath = getFilePath(filename);
 
-	console.log("Writing:", filepath)
-
-        require('fs').writeFile(filepath, JSON.stringify(content, null, 4));
+	console.log('Writing: ', filepath);
+	require('fs').writeFile(filepath, JSON.stringify(content, null, 4));
 }
 
-function readClientSettingsFromFile() {
-	settings = readJsonFile('client.json')
+function readSettingsFromFile() {
+	var settings = readJsonFile('settings.json');
 
-	return settings;
-}
-
-function readServerSettingsFromFile() {
-	settings = readJsonFile('server.json');
-
-	if (typeof(settings.port) == 'undefined') {
+	if (settings.port === undefined) {
 		settings.port = 1337;
 	}
 
-	if (typeof(process.env.PORT) != 'undefined') {
-		settings.port = process.env.PORT;
-	}
-
-	if (typeof(settings.expiryCheckInterval) == 'undefined') {
+	if (settings.expiryCheckInterval === undefined) {
 		settings.expiryCheckInterval = 5;
 	}
+
+	if (settings.adminPassword === undefined) {
+		// Defaults to '123'
+		settings.adminPassword = '2779d36c6dbdfd4261cf7dd1916d3677638af06c3e7121c2b9a5ef19db221a20225460697aa53c8cf4b2ab55da2cbd62a6eb04e2fe49a3309acb9fa90131d77d';
+	}
+
+	if (settings.slideExpire === undefined) {
+		settings.slideExpire = 0;
+	}
+
+	if (settings.slideDisplay === undefined) {
+		settings.slideDisplay = 15;
+	}
+
+	if (settings.layout === undefined) {
+		settings.layout = 'fullscreen';
+	}
+
+	if (settings.sound === undefined) {
+		settings.sound = '204424__jaraxe__alarm-3.wav';
+	}
+
+	settings.availableSounds = getAllSoundFiles();
 
 	return settings;
 }
 
-function reloadMessagesFromFile(server) {
+function saveSettingsToFile(settings) {
+	writeJsonFile('settings.json', settings);
+}
+
+function reloadMessagesFromFile(screen) {
 	try {
-		messages = readJsonFile('messages.json')
+		var messages = readJsonFile('messages.json');
 
-		console.log("Loaded messages are: \n" + messages);
+		console.log('Loaded messages are: \n', messages);
 
-		messages.forEach(server.screen.addMessage);
+		messages.forEach(screen.addMessage);
+		screen.checkTimer();
 	} catch (err) {
-		console.log("could not load default messages", err);
+		console.log('Could not load default messages', err);
 	}
 }
 
 function saveMessagesToFile(messages) {
-	writeJsonFile("messages.json", messages);
+	writeJsonFile('messages.json', messages);
+}
+
+function getAllSoundFiles() {
+	var dir = __dirname + '/../public/sounds/';
+	var sounds = [];
+
+	require('fs').readdir(dir, function(err, files) {
+		if (err) throw err;
+
+		files.forEach(function(file) {
+			sounds.push(file);
+		});
+	});
+
+	return sounds;
 }
 
 module.exports = {
 	getFilePath: getFilePath,
 	readJsonFile: readJsonFile,
-	readServerSettingsFromFile: readServerSettingsFromFile,
+	readSettingsFromFile: readSettingsFromFile,
 	reloadMessagesFromFile: reloadMessagesFromFile,
-	readClientSettingsFromFile: readClientSettingsFromFile,
-	saveMessagesToFile: saveMessagesToFile
+	saveMessagesToFile: saveMessagesToFile,
+	saveSettingsToFile: saveSettingsToFile
 }
