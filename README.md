@@ -19,6 +19,9 @@ ___
 * Go to `/` to view the output of FMB.
 * Go to `/control` to control the output.
 
+Default port is `1337`.
+Default admin password is `123`.
+
 ___
 
 #### Priority
@@ -27,6 +30,13 @@ ___
 * 3 - Add - Add to slide loop
 
 ### Other
+
+#### Known Issues
+* Directly accessing admin areas via URI currently not protected
+* Form submissions require more extensive validation (server and client)
+
+#### Desired Features
+* Status page to monitor screen connections & status. Ability to refresh individual screens.
 
 #### Sounds
 * [204424 jaraxe alarm 3][jaraxe alarm 3]
