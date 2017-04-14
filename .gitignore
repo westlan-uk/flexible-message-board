@@ -1,5 +1,2 @@
 node_modules
-**/*.swp
-messages.js
-**/*.swo
-*.log
+npm_debug.log

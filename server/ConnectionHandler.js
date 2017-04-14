@@ -1,17 +1,10 @@
 function ConnectionHandler(server, socket) {
-	var self = this;
 	this.socket = socket;
-	this.ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+	this.ip =  socket.handshake.address;
 	console.log('Client Screen Connection from: ' + this.ip);
 
 	this.init = function() {
-		self.setupSocketHandlers();
-		
-		server.screen.sendInitialData(self);
-	};
-
-	this.setupSocketHandlers = function () {
-		
+		server.screen.sendInitialData(this);
 	};
 
 	socket.on('disconnect', function() {
@@ -22,10 +15,15 @@ function ConnectionHandler(server, socket) {
 		});
 	});
 
+	socket.on('youtube-finished', function(data) {
+		var msg = server.screen.findMessageById(data.message.id);
+		console.log(msg);
+		server.screen.removeMessage(msg);
+	});
+
 	this.init();
 
 	return this;
-
 }
 
 module.exports = {

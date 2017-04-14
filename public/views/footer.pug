@@ -1,0 +1,28 @@
+hr/
+
+div.container-fluid
+	div.row
+		div#login.col-md-3.col-md-push-9
+			if adminPermission
+				form#adminLogout(action='/control/admin/logout', method='POST')
+					button#logoutButton.btn.btn-default(type='submit') Logout
+				br/
+				form#refresh(action='/control/admin/refresh', method='POST')
+					button#refresh.btn.btn-default(type='submit') Force Refresh
+				br/
+			else
+				form#adminLogin(action='/control/admin', method='POST')
+					div.input-group
+						input.form-control(type='password', name='password', placeholder='Admin Code', required='required')
+						span.input-group-btn
+							button#loginButton.btn.btn-default(type='submit') Login
+				br/
+		div#foot.col-md-9.col-md-pull-3
+			p
+				| &#169; 
+				script.
+					document.write(new Date().getFullYear())
+				|  FMB JS
+
+script(src='/js/jquery-1.11.3.min.js')
+script(src='/js/bootstrap.min.js')
