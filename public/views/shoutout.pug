@@ -1,0 +1,32 @@
+include header.pug
+div.container-fluid
+	div.row
+		div.col-md-12
+			div.panel.panel-default
+				div.panel-heading
+					h3.panel-title Send a Shoutout
+				div.panel-body
+					form.submission(action='/shoutout', method='POST')
+						div.form-group
+							label(for='content') Message
+							textarea.form-control(rows='5', name='content', placeholder='Enter your message here...', required='required')
+						button.btn.btn-default.submitBtn(type='submit') Submit
+			if adminPermission
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Settings
+					div.panel-body
+						form(action='/shoutout/settings', method='POST')
+							div.form-group
+								label.control-label(for='shoutoutEnabled', style='padding-right: 10px;') Plugin Enabled
+								input(type='checkbox', name='shoutoutEnabled', value='1', checked=settings.shoutout.enabled)
+							div.form-group.form-group-sm
+								label.control-label(for='shoutoutLayout', style='padding-right: 50px;') Layout
+								label.radio-inline(style='padding-right: 50px;')
+									input(type='radio', name='shoutoutLayout', value='shoutoutRight', checked=(settings.layout === 'shoutoutRight'))
+									img(src='/img/column-split.png')
+								label.radio-inline
+									input(type='radio', name='shoutoutLayout', value='shoutoutBottom', checked=(settings.layout === 'shoutoutBottom'))
+									img(src='/img/row-split.png')
+							button.btn.btn-default.submitBtn(type='submit') Save
+include footer.pug

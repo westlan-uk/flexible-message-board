@@ -1,0 +1,42 @@
+doctype html
+html
+	head
+		title Node FMB Control Panel
+		style
+			include ../css/bootstrap.min.css
+			include ../css/control.css
+	body
+		div.container-fluid
+			div.row
+				div#head.col-md-9
+					h1
+						a.nounderline(href='/control') FMB
+					ul.nav.nav-pills
+						li(role='presentation')
+							a(href='/control') Home
+						if adminPermission
+							li(role='presentation')
+								a(href='/control/slides') Slides
+						each cleanName, fileName in pluginsList
+							li(role='presentation')
+								a(href='/control/' + fileName)= cleanName
+				div#status.col-md-3
+					h4 Status
+					if screenAvailable
+						p#screen.bg-success
+							span.glyphicon.glyphicon-ok(aria-hidden='true')
+							| Screen Available
+					else
+						p#screen.bg-danger
+							span.glyphicon.glyphicon-remove(aria-hidden='true')
+							| Screen Unavailable
+
+					if adminPermission
+						p#admin.bg-success
+							span.glyphicon.glyphicon-ok(aria-hidden='true')
+							| Logged In
+					else
+						p#admin.bg-danger
+							span.glyphicon.glyphicon-remove(aria-hidden='true')
+							| Logged Out
+			hr/

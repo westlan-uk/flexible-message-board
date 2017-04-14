@@ -1,0 +1,18 @@
+doctype html
+html
+	head
+		title FMB Screen
+		style
+			include ../css/bootstrap.min.css
+			include ../css/screen.css
+	body
+		header#header
+			h1 FMB
+			p#status Waiting...
+
+		script(src='/socket.io/socket.io.js')
+		script(src='/js/jquery-1.11.3.min.js')
+		script(src='/js/allure.js')
+		script(src='/js/screen.js')
+
+		audio#alarm(src='/sounds/' + settings.sound)
