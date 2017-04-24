@@ -59,7 +59,8 @@ function readSettingsFromFile() {
 
 	if (settings.adminPassword === undefined) {
 		// Defaults to '123'
-		settings.adminPassword = '2779d36c6dbdfd4261cf7dd1916d3677638af06c3e7121c2b9a5ef19db221a20225460697aa53c8cf4b2ab55da2cbd62a6eb04e2fe49a3309acb9fa90131d77d';
+		settings.adminPassword = '68ebdac997a3165f8b442fb6eb52e5d35542cf48855a53e6cf765689c87157b265e9aea579717b4eea332823b044b933cf9e74f227c82544a11439a583b4425d';
+		settings.salt = 'cbfbc0722e6b6539';
 	}
 
 	if (settings.slideExpire === undefined) {

@@ -23,12 +23,8 @@ s.uuid = require('uuid');
 
 s.settings = s.config.readSettingsFromFile();
 
-s.crypto = require('crypto')
-/*var genRandomString = function(length) {
-	return s.crypto.randomBytes(Math.ceil(length/2))
-		.toString('hex')
-		.slice(0, length);
-}*/
+s.crypto = require('crypto');
+
 s.sha512 = function(password, salt) {
 	var hash = s.crypto.createHmac('sha512', salt);
 	hash.update(password);
@@ -37,12 +33,7 @@ s.sha512 = function(password, salt) {
 		salt: salt,
 		passwordHash: value
 	}
-}
-
-//s.settings.salt = genRandomString(16);
-//var passwordData = s.sha512('123', s.settings.salt);
-//console.log(passwordData.passwordHash);
-//console.log(passwordData.salt);
+};
 
 s.app.use(s.express.static(__dirname + '/../public'));
 s.app.use('/js/plugins', s.serveIndex(__dirname + '/../public/js/plugins'));
@@ -62,7 +53,6 @@ s.connections = [];
 ConnectionHandler = require('./ConnectionHandler.js').ConnectionHandler;
 s.io.sockets.on('connection', function(socket) {
 	var handler = new ConnectionHandler(s, socket);
-
 	s.connections.push(handler);
 });
 

@@ -108,9 +108,6 @@ function Route(s) {
 			s.settings.slideDisplay = req.body.slideDisplay;
 
 			success = true;
-		}
-
-		if (success) {
 			s.screen.updateSettings();
 		}
 
@@ -123,6 +120,7 @@ function Route(s) {
 		if (req.body.hasOwnProperty('port')) {
 			s.settings.port = req.body.port;
 			success = true;
+			s.screen.updateSettings();
 		}
 
 		res.redirect('/control?success=' + success);
@@ -176,6 +174,7 @@ function Route(s) {
 				if (newPass === req.body.passwordConfirm) {
 					s.settings.adminPassword = s.sha512(newPass, s.settings.salt).passwordHash;
 					success = true;
+					s.screen.updateSettings();
 				}
 			}
 		}
