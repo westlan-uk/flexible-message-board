@@ -6,15 +6,15 @@ var youtube = function() {
 		var state = window.state;
 
 		state.ui.resetFrame();
-		$('#frame').append('<div id="slideshow")>');
+		state.ui.updateFrames();
 
 		function playVideo(id) {
 			window.ytPlayer = new YT.Player('slideshow', {
-				width: $('#frame').width(),
-				height: $('#frame').height(),
+				width: $('#slideshow').width(),
+				height: $('#slideshow').height(),
 				videoId: message.content,
 				playerVars: {
-					controls: 0
+					//
 				},
 				events: {
 					'onReady': window.onPlayerReady,
