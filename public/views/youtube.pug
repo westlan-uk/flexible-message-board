@@ -29,7 +29,7 @@ div.container-fluid
 						form(action='/youtube/settings', method='POST')
 							div.form-group
 								label.control-label(for='moderationEnabled', style='padding-right: 10px;') Moderation Enabled
-								input(type='checkbox', name='moderationEnabled', value=true, checked=settings.youtube.moderationEnabled)
+								input(type='checkbox', name='moderationEnabled', value='1', checked=settings.youtube.moderationEnabled)
 							div.form-group
 								label.control-label(for='noModerationPriority', style='padding-right: 10px;') Default Priority
 								select(name='noModerationPriority')

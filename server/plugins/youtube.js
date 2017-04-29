@@ -125,6 +125,7 @@ function routes(s) {
 		if (req.body.hasOwnProperty('moderationEnabled')) {
 			success = true;
 			var modEnVal = req.body.moderationEnabled;
+console.log(modEnVal);
 			moderationEnabled = (modEnVal == '1' ? true : false);
 		}
 
@@ -132,7 +133,7 @@ function routes(s) {
 
 		if (req.body.hasOwnProperty('noModerationPriority')) {
 			success = true;
-			s.settings.youtube.noModerationPriority = parseInt(req.body.priority, 10);
+			s.settings.youtube.noModerationPriority = parseInt(req.body.noModerationPriority, 10);
 		}
 
 		s.screen.updateSettings();
