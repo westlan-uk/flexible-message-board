@@ -98,11 +98,42 @@ function routes(s) {
 		if (req.body.hasOwnProperty('watch')) {
 			success = true;
 
-			s.settings.youtube.moderationQueue.push({
-				content: req.body.watch,
-				ip: ip
-			});
+			if (s.settings.youtube.moderationEnabled) {
+				s.settings.youtube.moderationQueue.push({
+					content: req.body.watch,
+					ip: ip
+				});
+			} else {
+				var ytMessage = {
+					type: 'youtube',
+					content: req.body.watch,
+					priority: s.settings.youtube.noModerationPriority
+				};
+
+				s.screen.addMessage(ytMessage);
+			}
 		}
+
+		res.redirect('/control/youtube?success=' + success);
+	});
+
+	s.app.post('/youtube/settings', s.urlencodedParser, function(req, res) {
+		var success = false;
+		var moderationEnabled = false;
+
+		if (req.body.hasOwnProperty('moderationEnabled')) {
+			success = true;
+			moderationEnabled = req.body.moderationEnabled;
+		}
+
+		s.settings.youtube.moderationEnabled = moderationEnabled;
+
+		if (req.body.hasOwnProperty('noModerationPriority')) {
+			success = true;
+			s.settings.youtube.noModerationPriority = req.body.noModerationPriority;
+		}
+
+		s.screen.updateSettings();
 
 		res.redirect('/control/youtube?success=' + success);
 	});
@@ -116,6 +147,14 @@ function settings(s) {
 	}
 
 	var settings = s.settings.youtube;
+
+	if (settings.moderationEnabled === undefined) {
+		settings.moderationEnabled = true;
+	}
+
+	if (settings.noModerationPriority === undefined) {
+		settings.noModerationPriority = 2;
+	}
 
 	if (settings.moderationQueue === undefined) {
 		settings.moderationQueue = [];
