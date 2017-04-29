@@ -84,6 +84,7 @@ function routes(s) {
 
 			s.screen.checkTimer();
 			res.redirect('/control/youtube');
+			return;
 		}
 
 		res.sendStatus(200);
@@ -123,14 +124,16 @@ function routes(s) {
 
 		if (req.body.hasOwnProperty('moderationEnabled')) {
 			success = true;
-			moderationEnabled = req.body.moderationEnabled;
+			var modEnVal = req.body.moderationEnabled;
+console.log(modEnVal);
+			moderationEnabled = (modEnVal == '1' ? true : false);
 		}
 
 		s.settings.youtube.moderationEnabled = moderationEnabled;
 
 		if (req.body.hasOwnProperty('noModerationPriority')) {
 			success = true;
-			s.settings.youtube.noModerationPriority = req.body.noModerationPriority;
+			s.settings.youtube.noModerationPriority = parseInt(req.body.noModerationPriority, 10);
 		}
 
 		s.screen.updateSettings();
