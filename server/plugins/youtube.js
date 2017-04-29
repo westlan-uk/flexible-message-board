@@ -124,14 +124,15 @@ function routes(s) {
 
 		if (req.body.hasOwnProperty('moderationEnabled')) {
 			success = true;
-			moderationEnabled = req.body.moderationEnabled;
+			var modEnVal = req.body.moderationEnabled;
+			moderationEnabled = (modEnVal == '1' ? true : false);
 		}
 
 		s.settings.youtube.moderationEnabled = moderationEnabled;
 
 		if (req.body.hasOwnProperty('noModerationPriority')) {
 			success = true;
-			s.settings.youtube.noModerationPriority = req.body.noModerationPriority;
+			s.settings.youtube.noModerationPriority = parseInt(req.body.priority, 10);
 		}
 
 		s.screen.updateSettings();
