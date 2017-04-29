@@ -106,7 +106,7 @@ function routes(s) {
 			} else {
 				var ytMessage = {
 					type: 'youtube',
-					content: req.query.watch,
+					content: req.body.watch,
 					priority: s.settings.youtube.noModerationPriority
 				};
 
@@ -119,16 +119,21 @@ function routes(s) {
 
 	s.app.post('/youtube/settings', s.urlencodedParser, function(req, res) {
 		var success = false;
+		var moderationEnabled = false;
 
-		if (req.body.hasOwnProperty('moderationEnabled') &&
-			req.body.hasOwnProperty('noModerationPriority')) {
+		if (req.body.hasOwnProperty('moderationEnabled')) {
 			success = true;
-
-			s.settings.youtube.moderationEnabled = req.body.moderationEnabled;
-			s.settings.youtube.noModerationPriority = req.body.noModerationPriority;
-
-			s.screen.updateSettings();
+			moderationEnabled = req.body.moderationEnabled;
 		}
+
+		s.settings.youtube.moderationEnabled = moderationEnabled;
+
+		if (req.body.hasOwnProperty('noModerationPriority')) {
+			success = true;
+			s.settings.youtube.noModerationPriority = req.body.noModerationPriority;
+		}
+
+		s.screen.updateSettings();
 
 		res.redirect('/control/youtube?success=' + success);
 	});
