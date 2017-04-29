@@ -77,8 +77,16 @@ function routes(s) {
 	});
 
 	s.app.get('/control/admin/youtube/skip', function(req, res) {
-		s.screen.checkTimer();
-		res.redirect('/control/youtube');
+		var currentMsg = s.screen.currentMessage;
+
+		if (currentMsg.type === 'youtube') {
+			s.screen.removeMessage(currentMsg);
+
+			s.screen.checkTimer();
+			res.redirect('/control/youtube');
+		}
+
+		res.sendStatus(200);
 	});
 
 	s.app.post('/youtube', s.urlencodedParser, function(req, res) {
