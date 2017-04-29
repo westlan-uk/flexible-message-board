@@ -98,10 +98,20 @@ function routes(s) {
 		if (req.body.hasOwnProperty('watch')) {
 			success = true;
 
-			s.settings.youtube.moderationQueue.push({
-				content: req.body.watch,
-				ip: ip
-			});
+			if (s.settings.youtube.moderationEnabled) {
+				s.settings.youtube.moderationQueue.push({
+					content: req.body.watch,
+					ip: ip
+				});
+			} else {
+				var ytMessage = {
+					type: 'youtube',
+					content: req.query.watch,
+					priority: s.settings.youtube.noModerationPriority
+				};
+
+				s.screen.addMessage(ytMessage);
+			}
 		}
 
 		res.redirect('/control/youtube?success=' + success);
