@@ -106,6 +106,22 @@ function routes(s) {
 
 		res.redirect('/control/youtube?success=' + success);
 	});
+
+	s.app.post('/youtube/settings', s.urlencodedParser, function(req, res) {
+		var success = false;
+
+		if (req.body.hasOwnProperty('moderationEnabled') &&
+			req.body.hasOwnProperty('noModerationPriority')) {
+			success = true;
+
+			s.settings.youtube.moderationEnabled = req.body.moderationEnabled;
+			s.settings.youtube.noModerationPriority = req.body.noModerationPriority;
+
+			s.screen.updateSettings();
+		}
+
+		res.redirect('/control/youtube?success=' + success);
+	});
 }
 
 function settings(s) {
@@ -116,6 +132,14 @@ function settings(s) {
 	}
 
 	var settings = s.settings.youtube;
+
+	if (settings.moderationEnabled === undefined) {
+		settings.moderationEnabled = true;
+	}
+
+	if (settings.noModerationPriority === undefined) {
+		settings.noModerationPriority = 2;
+	}
 
 	if (settings.moderationQueue === undefined) {
 		settings.moderationQueue = [];
