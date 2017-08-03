@@ -1,0 +1,81 @@
+include header.pug
+div.container-fluid
+	div.row
+		div.col-md-12
+			div.panel.panel-default
+				div.panel-heading
+					h3.panel-title Add New Slide
+				div.panel-body
+					form.form-horizontal(action='/slide', method='POST')
+						div.form-group.form-group-sm
+							label.control-label(for='content') Content
+							div.col-md-7
+								textarea.form-control(rows='12', name='content', required='required')
+									<p></p>
+							div.col-md-5
+								p Must be valid HTML, so it must have a root element like a P for paragraph, example:
+								blockquote
+									tt &lt;p&gt;This is an example of an &lt;b&gt;<b>awesome</b>&lt;b&gt; slide!&lt;/p&gt;
+								p Examples:
+									tt
+										br/
+										| &lt;b&gt;<b>bold</b>&lt;/b&gt;
+										br/
+										| &lt;span style="color: red;"&gt;
+										span(style='color: red;') red text
+										| &lt;/span&gt;
+						div.form-group.form-group-sm
+							label.col-md-1.control-label(for='expire') Expire Time (seconds)
+							div.col-md-6
+								input.form-control(type='text', name='expire', required='required', value=settings.slideExpire)
+							div.col-md-5
+								p How long until the slide is auto-deleted? Enter <strong>0</strong> and the slide will never be deleted.
+								p Examples: 
+									i 60 = 1 minute, 300 = 5 minutes, 900 = 15 minutes, 1800 = 30 minutes, 3600 = 1 hour
+						div.form-group.form-group-sm
+							label.col-md-1.control-label(for='delay') Display Time (seconds)
+							div.col-md-6
+								input.form-control(type='text', name='delay', required='required', value=settings.slideDisplay)
+							div.col-md-5
+								p How long to display this slide before going to the next one.
+								p Examples: 
+									i 60 = 1 minute, 300 = 5 minutes, 900 = 15 minutes, 1800 = 30 minutes, 3600 = 1 hour
+						button.btn.btn-default.submitBtn(type='submit') Add Slide
+			if adminPermission
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Existing Slides
+					div.panel-body
+						div.table-responsive
+							table#slideTable.table.table-hover
+								tr
+									th Id
+									th Added
+									th Content
+									th Expiry
+									th Display Time
+									th Delete?
+								each slide in slides
+									tr
+										td= slide.id
+										td= slide.added
+										td= slide.content
+										td= slide.expire
+										td= slide.delay
+										td
+											a.inline-delete(href='/slide/delete?id=' + slide.id) Delete
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Settings
+					div.panel-body
+						form#settingsForm.form-horizontal(action='/slide/settings', method='POST')
+							div.form-group.form-group-sm
+								label.col-sm-1.control-label(for='slideExpire') Default Expire Time (s)
+								div.col-sm-11
+									input.form-control(type='text', name='slideExpire', value=settings.slideExpire)
+							div.form-group.form-group-sm
+								label.col-sm-1.control-label(for='slideDisplay') Default Display Time (s)
+								div.col-sm-11
+									input.form-control(type='text', name='slideDisplay', value=settings.slideDisplay)
+							button.btn.btn-default.submitBtn(type='submit') Save
+include footer.pug

@@ -1,0 +1,10 @@
+[
+    {
+        "type": "slide",
+        "content": "<p>This is an example slide for the example config's purpose.</p>\r\n<p>To add slides of your own, log into /control and login.</p>\r\n<p>The default password is '123'!</p>",
+        "expire": 0,
+        "delay": 15,
+        "added": 1493469913,
+        "id": "b049ee50-2cd9-11e7-bb06-47eda72c319d"
+    }
+]
