@@ -47,7 +47,14 @@ function writeJsonFile(filename, content) {
 }
 
 function readSettingsFromFile() {
-	var settings = readJsonFile('settings.json');
+	try { 
+		var settings = readJsonFile('settings.json');
+	} catch (err) {
+		if (err.code == "ENOENT") {
+			console.log("Could not open settings.json file - it does not exist. Default settings will be used.");	
+			settings = {}
+		}
+	}
 
 	if (settings.port === undefined) {
 		settings.port = 1337;
