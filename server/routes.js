@@ -8,6 +8,12 @@ function Route(s) {
 		res.json({message: "Messages dumped to console."});
 	});
 
+	s.app.get("/dumpSettings", function(req, res) {
+		console.log(s.settings);
+
+		res.json({message: "Settings dump to console."});
+	});
+
 	s.app.get('/dumpConnections', function(req, res) {
 		console.log("Connections: " + s.connections.length)
 		s.connections.forEach(function(connection) {
