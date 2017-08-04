@@ -24,10 +24,13 @@ function routes(s) {
 		console.log('Shoutout submitted from ip: ' + ip);
 		
 		var success = false;
-		
+
 		if (req.body.hasOwnProperty('content')) {
 			success = true;
-			var content = req.body.content;
+
+			var striptags = require("striptags")
+			var content = striptags(req.body.content);
+
 			s.screen.emitMessagesToEveryone('shoutout-new', { content: content });
 		}
 		
