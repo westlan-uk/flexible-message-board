@@ -7,7 +7,7 @@ function PluginManager(s) {
 		if (err) throw err;
 
 		files.forEach(function(file) {
-			if (!pluginName.endsWith(".js")) {
+			if (!file.endsWith(".js")) {
 				return;
 			}
 
