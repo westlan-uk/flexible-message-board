@@ -7,10 +7,6 @@ function PluginManager(s) {
 		if (err) throw err;
 
 		files.forEach(function(file) {
-			if (!file.endsWith(".js")) {
-				return;
-			}
-
 			var pluginName = file.substring(0, file.length - 3);
 			var pluginInit = require(self.dir + file).initialise(s);
 
