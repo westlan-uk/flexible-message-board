@@ -35,22 +35,19 @@ function Route(s) {
 	});
 
 	s.app.get('/control/slides', function(req, res) {
-		var slides = [];
-		var allMessages = s.screen.messages;
-		
-		for (var i = 0; i < allMessages.length; i++) {
-			if (allMessages[i].type == 'slide') {
-				slides.push(allMessages[i]);
-			}
-		}
+		renderSlideList(s, req, res, null);
+	});
 
-		res.render('slides', {
-			screenAvailable: (s.screen !== undefined),
-			adminPermission: (req.session.adminPermission || false),
-			settings: s.settings,
-			pluginsList: s.pluginManager.registered,
-			slides: slides
-		});
+	s.app.get('/control/slides/edit', function(req, res) {
+		if (req.query.hasOwnProperty('id')) {
+			var id = req.query.id;
+
+			var slide = s.screen.getMessageById(id)
+
+			console.log(slide)
+
+			renderSlideList(s, req, res, slide);
+		}
 	});
 
 	s.app.post('/slide', s.urlencodedParser, function(req, res) {
@@ -83,12 +80,7 @@ function Route(s) {
 			var ip = req.headers['x-forwarded-for'];
 			console.log('Slide (' + id + ') being deleted by ip: ' + ip);
 
-			s.screen.messages.forEach(function(message) {
-				if (message.id === id) {
-					success = true;
-					s.screen.removeMessage(message);
-				}
-			});
+			success = s.screen.removeMessage(s.screen.getMessageById(id))
 		}
 
 		if (success) {
@@ -185,6 +177,34 @@ function Route(s) {
 	s.app.post('/control/admin/refresh', function(req, res) {
 		s.screen.forceRefresh();
 		res.redirect('/control');
+	});
+}
+
+function renderSlideList(s, req, res, slideTemplate) {
+	var slides = [];
+	var allMessages = s.screen.messages;
+
+	if (slideTemplate == null) {
+		var slideTemplate = {
+			expire: s.settings.slideExpire,
+			delay: s.settings.slideDisplay, // should be renamed "display" in create slide
+			content: "Your slide goes here..."
+		}
+	}
+		
+	for (var i = 0; i < allMessages.length; i++) {
+		if (allMessages[i].type == 'slide') {
+			slides.push(allMessages[i]);
+		}
+	}
+
+	res.render('slides', {
+		screenAvailable: (s.screen !== undefined),
+		adminPermission: (req.session.adminPermission || false),
+		settings: s.settings,
+		pluginsList: s.pluginManager.registered,
+		slideTemplate: slideTemplate,
+		slides: slides
 	});
 }
 
