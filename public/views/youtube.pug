@@ -1,0 +1,69 @@
+include header.pug
+div.container-fluid
+	div.row
+		div.col-md-12
+			div.panel.panel-default
+				div.panel-heading
+					h3.panel-title Suggest a Video
+				div.panel-body
+					form.form-horizontal.submission(action='/youtube', method='POST')
+						img(src='/img/youtubeid.png')
+						br
+						br
+						div.form-group
+							label.col-sm-2.control-label(for='watch') YouTube Video ID
+							div.col-sm-10
+								input.form-control(type='text', name='watch', required='required')
+						button.btn.btn-default.submitBtn(type='submit') Submit
+			if adminPermission
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Playback Controls
+					div.panel-body
+						a.btn.btn-info(href='/control/admin/youtube/play' style='margin-right: 10px;') Play/Pause
+						a.btn.btn-danger(href='/control/admin/youtube/skip') Skip
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Settings
+					div.panel-body
+						form(action='/youtube/settings', method='POST')
+							div.form-group
+								label.control-label(for='moderationEnabled', style='padding-right: 10px;') Moderation Enabled
+								input(type='checkbox', name='moderationEnabled', value='1', checked=settings.youtube.moderationEnabled)
+							div.form-group
+								label.control-label(for='noModerationPriority', style='padding-right: 10px;') Default Priority
+								select(name='noModerationPriority')
+										option(value='1', selected=(settings.youtube.noModerationPriority === 1 ? true : false)) Start Immediately
+										option(value='2', selected=(settings.youtube.noModerationPriority === 2 ? true : false)) Start Next Slide
+										option(value='3', selected=(settings.youtube.noModerationPriority === 3 ? true : false)) End of Rotation
+							button.btn.btn-default.submitBtn(type='submit') Save
+				if settings.youtube.moderationEnabled
+					div.panel.panel-default
+						div.panel-heading
+							h3.panel-title Moderation Queue
+						div.panel-body
+							each submission in moderationQueue
+								form(action='/control/admin/youtube?id=' + submission.content, method='POST')
+									div.panel.panel-default
+										div.panel-body
+											div.col-md-9
+												iframe(width='100%', height='300', src='https://www.youtube.com/embed/' + submission.content, frameborder='0')
+											div.form-group.col-md-3
+												p
+													b IP Address of Submitter
+												p= submission.ip
+											div.form-group.col-md-3
+												p
+													b Video ID
+												p= submission.content
+											div.form-group.col-md-3
+												select(name='priority')
+													option(value='1') Start Immediately
+													option(value='2') Start Next Slide
+													option(value='3') End of Rotation
+												br
+												br
+												p
+													a.inline-delete(href='/control/youtube/delete?id=' + submission.content) Delete
+												button.btn.btn-default.submitBtn(type='submit') Send to Screen
+include footer.pug

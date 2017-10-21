@@ -1,0 +1,44 @@
+{
+	"name": "node-flexible-message-board",
+	"version": "2.0.0",
+	"description": "A flexible message board for use on projectors and other displays",
+	"main": "app.js",
+	"scripts": {
+		"start": "node server/app.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/westlan-uk/flexible-message-board.git"
+	},
+	"keywords": [
+		"node",
+		"flexible",
+		"message",
+		"board",
+		"westlan",
+		"lan",
+		"uk",
+		"projector",
+		"display"
+	],
+	"author": "westlan-uk (CWFranklin & jamesread)",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/westlan-uk/flexible-message-board/issues"
+	},
+	"homepage": "https://github.com/westlan-uk/flexible-message-board#readme",
+	"dependencies": {
+		"body-parser": "^1.15.2",
+		"cookie-parser": "^1.4.3",
+		"express": "^4.14.0",
+		"express-session": "^1.14.2",
+		"fs": "0.0.1-security",
+		"http": "0.0.0",
+		"path": "^0.12.7",
+		"pug": "^2.0.0-beta6",
+		"serve-index": "^1.8.0",
+		"socket.io": "^1.7.2",
+		"uuid": "^3.0.1"
+	}
+}

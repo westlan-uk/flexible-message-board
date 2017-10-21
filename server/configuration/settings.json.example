@@ -1,0 +1,10 @@
+{
+    "port": "80",
+    "expiryCheckInterval": 5,
+    "adminPassword": "68ebdac997a3165f8b442fb6eb52e5d35542cf48855a53e6cf765689c87157b265e9aea579717b4eea332823b044b933cf9e74f227c82544a11439a583b4425d",
+    "salt": "cbfbc0722e6b6539",
+    "slideExpire": 0,
+    "slideDisplay": 15,
+    "layout": "fullscreen",
+    "sound": "204424__jaraxe__alarm-3.wav"
+}

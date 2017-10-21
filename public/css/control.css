@@ -1,0 +1,44 @@
+#status p {
+	padding: 2px 5px;
+}
+#status p span {
+	padding-right: 5px;
+}
+
+.nounderline {
+	color: #000;
+	text-decoration: none;
+}
+.nounderline:hover{
+	color: #000;
+	text-decoration: none;
+}
+
+.inline-button {
+	display: inline-block;
+	border-radius: 4px;
+	text-align: center;
+	font-size: .923em;
+	text-decoration: none;
+	min-width: 45px;
+	white-space: nowrap;
+	padding: 2px 5px;
+	cursor: pointer;
+	margin-right: 1em;
+}
+
+.inline-edit {
+	background-color: beige;
+	color: #000;
+}
+
+.inline-delete {
+	background-color: #ebdcda;
+	color: #fff;
+}
+
+.inline-delete:hover {
+	text-decoration: none;
+	background-color: #c65d5a;
+	color: #fff;
+}

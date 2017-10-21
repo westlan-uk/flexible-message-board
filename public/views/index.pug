@@ -1,0 +1,62 @@
+include header.pug
+div.container-fluid
+	div.row
+		div.col-md-12
+			if adminPermission
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Environment
+					div.panel-body
+						div.alert.alert-danger
+							| Changing these settings will require a restart of the application to take effect.
+						form.form-horizontal(action='/environment', method='POST')
+							div.form-group
+								label.control-label.col-sm-2(for='port') Port
+								div.col-sm-10
+									input.form-control(type='text', name='port', value=settings.port)
+							button.btn.btn-default.submitBtn(type='submit') Save
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Notification Sound
+					div.panel-body
+						div.alert.alert-info
+							| Changing the active sound will not take place until the screen is refreshed.
+							br/
+							| If you have added a new sound to the folder, you will need to restart the application to see it here.
+						form(action='/sound', method='POST')
+							div.radio
+								each sound in settings.availableSounds
+									label
+										input(type='radio', name='sound' value=sound, checked=(settings.sound === sound))
+										| #{sound}&nbsp;&nbsp;
+										audio(data-name=sound, src='/sounds/' + sound)
+										button.btn.btn-default.btn-xs.playSound(type='button', data-play=sound)
+											span.glyphicon.glyphicon-play(aria-hidden='true')
+											| &nbsp;Play
+									br/
+							button.btn.btn-default.submitBtn(type='submit') Save
+				div.panel.panel-default
+					div.panel-heading
+						h3.panel-title Password Change
+					div.panel-body
+						form.form-horizontal(action='/control/admin/update', method='POST')
+							div.form-group
+								label.control-label.col-sm-2(for='passwordOld') Old
+								div.col-sm-10
+									input.form-control(type='password', name='passwordOld')
+							div.form-group
+								label.control-label.col-sm-2(for='password') New
+								div.col-sm-10
+									input.form-control(type='password', name='password')
+							div.form-group
+								label.control-label.col-sm-2(for='passwordConfirm') Confirm
+								div.col-sm-10
+									input.form-control(type='password', name='passwordConfirm')
+							button.btn.btn-default.submitBtn(type='submit') Update
+include footer.pug
+script.
+	$('.playSound').click(function(e) {
+		e.preventDefault();
+		var fileName = $(this).attr('data-play');
+		var sound = $("audio[data-name='" + fileName + "']")[0].play();
+	});
