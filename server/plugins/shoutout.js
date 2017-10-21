@@ -28,7 +28,10 @@ function routes(s) {
 		if (req.body.hasOwnProperty('content')) {
 			success = true;
 			var content = req.body.content;
-			s.screen.emitMessagesToEveryone('shoutout-new', { content: content });
+			s.screen.emitMessagesToEveryone('shoutout-new', { 
+				content: content,
+				sound: s.settings.sound
+			});
 		}
 		
 		res.redirect('/control/shoutout?success=' + success);

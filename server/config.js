@@ -124,6 +124,8 @@ function getAllSoundFiles() {
 		});
 	});
 
+	sounds.push("nosound");
+
 	return sounds;
 }
 

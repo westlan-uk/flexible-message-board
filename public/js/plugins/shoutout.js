@@ -28,11 +28,14 @@ var shoutout = function() {
 		return tick;
 	}
 
-	function renderShoutout(content) {
+	function renderShoutout(content, playSound) {
 		var tick = generateShoutout(content);
 		$('#ticker').prepend(tick);
 		tick.slideDown();
-		window.state.sound.play();
+
+		if (playSound != null && playSound != false && playSound != "nosound") {
+			window.state.sound.play();
+		}
 	}
 
 	/* Declaring Layouts */
@@ -54,7 +57,7 @@ var shoutout = function() {
 	window.state.connectionHandler.socket.on('shoutout-new', function(data) {
 		window.state.shoutouts.unshift(data.content);
 
-		renderShoutout(data.content);
+		renderShoutout(data.content, data.sound);
 
 		window.state.shoutouts.length = 50;
 	});
