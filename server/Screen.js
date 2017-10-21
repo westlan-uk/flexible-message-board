@@ -73,7 +73,10 @@ function Screen(server) {
 	 */
 	self.addMessage = function(message) {
 		if (message.added === undefined || message.added === 0) {
-			message.added = Math.floor(Date.now() / 1000);
+			message.addedTimestamp = Date.now()
+			
+			var now = new Date()
+			message.added = now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear() + " " + now.getHours() +":" + now.getMinutes()
 		}
 
 		if (message.id === undefined || message.id === 0) {
@@ -105,6 +108,18 @@ function Screen(server) {
 
 		self.saveMessages();
 	};
+
+	self.getMessageById = function(id) {
+		var ret = {}
+
+		self.messages.forEach(function(message) {
+			if (message.id === id) {
+				ret = message
+			}
+		});
+
+		return ret;
+	}
 
 	self.removeMessage = function(message) {
 		var index = self.messages.indexOf(message);
