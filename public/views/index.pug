@@ -30,9 +30,10 @@ div.container-fluid
 										input(type='radio', name='sound' value=sound, checked=(settings.sound === sound))
 										| #{sound}&nbsp;&nbsp;
 										audio(data-name=sound, src='/sounds/' + sound)
-										button.btn.btn-default.btn-xs.playSound(type='button', data-play=sound)
-											span.glyphicon.glyphicon-play(aria-hidden='true')
-											| &nbsp;Play
+										if sound !== 'nosound'
+											button.btn.btn-default.btn-xs.playSound(type='button', data-play=sound)
+												span.glyphicon.glyphicon-play(aria-hidden='true')
+												| &nbsp;Play
 									br/
 							button.btn.btn-default.submitBtn(type='submit') Save
 				div.panel.panel-default
