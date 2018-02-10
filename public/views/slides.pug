@@ -11,20 +11,8 @@ if adminPermission
 						form.form-horizontal(action='/slide', method='POST')
 							div.form-group.form-group-sm
 								label.control-label(for='content') Content
-								div.col-md-7
-									textarea.form-control(rows='12', name='content', required='required') #{slideTemplate.content}
-								div.col-md-5
-									p Must be valid HTML, so it must have a root element like a P for paragraph, example:
-									blockquote
-										tt &lt;p&gt;This is an example of an &lt;b&gt;<b>awesome</b>&lt;b&gt; slide!&lt;/p&gt;
-									p Examples:
-										tt
-											br/
-											| &lt;b&gt;<b>bold</b>&lt;/b&gt;
-											br/
-											| &lt;span style="color: red;"&gt;
-											span(style='color: red;') red text
-											| &lt;/span&gt;
+								div.col-md-12
+									textarea#slideEdit.form-control(name='content', required='required') #{slideTemplate.content}
 							div.form-group.form-group-sm
 								label.col-md-1.control-label(for='expire') Expire Time (seconds)
 								div.col-md-6
@@ -84,4 +72,5 @@ else
 		p Admin permission needed to view slides.
 include footer.pug
 
-
+script(src='/ckeditor/ckeditor.js')
+script CKEDITOR.replace('slideEdit')
