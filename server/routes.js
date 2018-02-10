@@ -40,6 +40,10 @@ function Route(s) {
 		});
 	});
 
+	s.app.get('/control/preview', function(req, res) {
+		res.render('preview');
+	});
+
 	s.app.get('/control/slides', function(req, res) {
 		renderSlideList(s, req, res, null);
 	});
@@ -117,6 +121,19 @@ function Route(s) {
 
 		if (req.body.hasOwnProperty('port')) {
 			s.settings.port = req.body.port;
+			success = true;
+			s.screen.updateSettings();
+		}
+
+		res.redirect('/control?success=' + success);
+	});
+
+	s.app.post('/display', s.urlencodedParser, function(req, res) {
+		var success = false;
+
+		if (req.body.hasOwnProperty('resolutionX') && req.body.hasOwnProperty('resolutionY')) {
+			s.settings.resolution.x = req.body.resolutionX;
+			s.settings.resolution.y = req.body.resolutionY;
 			success = true;
 			s.screen.updateSettings();
 		}
