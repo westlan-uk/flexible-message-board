@@ -1,5 +1,30 @@
 include header.pug
 
+style.
+	#previewWrap {
+		width: calc( #{ settings.resolution.x }px * 0.15 );
+		height: calc( #{ settings.resolution.y }px * 0.15 );
+		padding: 0;
+		overflow: hidden;
+		border: 1px solid black;
+	}
+
+	#previewFrame {
+		width: #{ settings.resolution.x }px;
+		height: #{ settings.resolution.y }px;
+		border: 0;
+		-ms-transform: scale(0.15);
+		-moz-transform: scale(0.15);
+		-o-transform: scale(0.15);
+		-webkit-transform: scale(0.15);
+		transform: scale(0.15);
+		-ms-transform-origin: 0 0;
+		-moz-transform-origin: 0 0;
+		-o-transform-origin: 0 0;
+		-webkit-transform-origin: 0 0;
+		transform-origin: 0 0;
+	}
+
 if adminPermission
 	div.container-fluid
 		div.row
@@ -10,28 +35,15 @@ if adminPermission
 					div.panel-body
 						form.form-horizontal(action='/slide', method='POST')
 							div.form-group.form-group-sm
-								label.control-label(for='content') Content
-								div.col-md-7
-									textarea.form-control(rows='12', name='content', required='required') #{slideTemplate.content}
-								div.col-md-5
-									p Must be valid HTML, so it must have a root element like a P for paragraph, example:
-									blockquote
-										tt &lt;p&gt;This is an example of an &lt;b&gt;<b>awesome</b>&lt;b&gt; slide!&lt;/p&gt;
-									p Examples:
-										tt
-											br/
-											| &lt;b&gt;<b>bold</b>&lt;/b&gt;
-											br/
-											| &lt;span style="color: red;"&gt;
-											span(style='color: red;') red text
-											| &lt;/span&gt;
+								div.col-md-12
+									textarea#slideEdit.form-control(name='content', required='required') #{slideTemplate.content}
 							div.form-group.form-group-sm
 								label.col-md-1.control-label(for='expire') Expire Time (seconds)
 								div.col-md-6
 									input.form-control(type='text', name='expire', required='required', value=slideTemplate.expire)
 								div.col-md-5
 									p How long until the slide is auto-deleted? Enter <strong>0</strong> and the slide will never be deleted.
-									p Examples: 
+									p Examples:
 										i 60 = 1 minute, 300 = 5 minutes, 900 = 15 minutes, 1800 = 30 minutes, 3600 = 1 hour
 							div.form-group.form-group-sm
 								label.col-md-1.control-label(for='delay') Display Time (seconds)
@@ -41,6 +53,9 @@ if adminPermission
 									p How long to display this slide before going to the next one.
 									p Examples: 
 										i 60 = 1 minute, 300 = 5 minutes, 900 = 15 minutes, 1800 = 30 minutes, 3600 = 1 hour
+							div#previewWrap(style='float: right;')
+								iframe#previewFrame(src='/control/preview')
+							button.btn.btn-default.previewBtn(style='float: right; margin-right: 20px;') Update Preview
 							button.btn.btn-default.submitBtn(type='submit') Add Slide
 				div.panel.panel-default
 					div.panel-heading
@@ -84,4 +99,12 @@ else
 		p Admin permission needed to view slides.
 include footer.pug
 
-
+script(src='/ckeditor/ckeditor.js')
+script.
+	CKEDITOR.replace('slideEdit')
+	$('.previewBtn').click(function(e) {
+		e.preventDefault();
+		var content = CKEDITOR.instances['slideEdit'].getData();
+	console.log(content);
+		$('#previewFrame').contents().find('div.auto-margin').html(content);
+	});

@@ -79,6 +79,13 @@ function readSettingsFromFile() {
 		settings.sound = '204424__jaraxe__alarm-3.wav';
 	}
 
+	if (settings.resolution === undefined) {
+		settings.resolution = {
+			x: 1920,
+			y: 1080
+		};
+	}
+
 	settings.availableSounds = getAllSoundFiles();
 
 	return settings;
