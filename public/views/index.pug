@@ -17,6 +17,20 @@ div.container-fluid
 							button.btn.btn-default.submitBtn(type='submit') Save
 				div.panel.panel-default
 					div.panel-heading
+						h3.panel-title Display
+					div.panel-body
+						form.form-horizontal(action='/display', method='POST')
+							div.form-group
+								label.control-label.col-sm-2(for='resolutionX') Resolution X
+								div.col-sm-10
+									input.form-control(type='text', name='resolutionX', value=settings.resolution.x)
+							div.form-group
+								label.control-label.col-sm-2(for='resolutionY') Resolution Y
+								div.col-sm-10
+									input.form-control(type='text', name='resolutionY', value=settings.resolution.y)
+							button.btn.btn-default.submitBtn(type='submit') Save
+				div.panel.panel-default
+					div.panel-heading
 						h3.panel-title Notification Sound
 					div.panel-body
 						div.alert.alert-info
