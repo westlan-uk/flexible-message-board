@@ -31,6 +31,35 @@ if adminPermission
 			div.col-md-12
 				div.panel.panel-default
 					div.panel-heading
+						h3.panel-title Slide Template
+					div.panel-body
+						form.form-horizontal(action='/sideTemplate', method='POST')
+							div.form-group.form-group-sm
+								label.col-md-2.control-label(for='templateImage') Image
+								div.col-md-10
+									select.form-control(name="templateImage")
+										option Please select an image
+										each file in templateImages
+											option(value=file)= file
+							div.form-group.form-group-sm
+								label.col-md-2.control-label(for='box1head') Box 1 Header (sign-up message etc.)
+								div.col-md-10
+									input.form-control(type='text', name='box1head', required='required')
+							div.form-group.form-group-sm
+								label.col-md-2.control-label(for='box1sub') Box 1 Sub-text
+								div.col-md-10
+									input.form-control(type='text', name='box1sub')
+							div.form-group.form-group-sm
+								label.col-md-2.control-label(for='box2head') Box 2 Header (time + name etc.)
+								div.col-md-10
+									input.form-control(type='text', name='box2head', required='required')
+							div.form-group.form-group-sm
+								label.col-md-2.control-label(for='box2sub') Box 2 Sub-text
+								div.col-md-10
+									input.form-control(type='text', name='box2sub')
+							button.btn.btn-default.submitBtn(type='submit') Save
+				div.panel.panel-default
+					div.panel-heading
 						h3.panel-title Add New Slide
 					div.panel-body
 						form.form-horizontal(action='/slide', method='POST')

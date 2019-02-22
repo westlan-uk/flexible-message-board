@@ -82,6 +82,38 @@ function Route(s) {
 		res.redirect('/control/slides?success=' + success);
 	});
 
+	s.app.post('/sideTemplate', s.urlencodedParser, function(req, res) {
+		var ip = req.headers['x-forwarded-for'];
+		console.log('Slide submitted from ip: ' + ip);
+
+		var success = false;
+
+		if (req.body.hasOwnProperty('box1head')
+			&& req.body.hasOwnProperty('box2head')
+			&& req.body.hasOwnProperty('templateImage')) {
+			success = true;
+
+			var constructSlideTemplate = require('./slideTemplate.js');
+
+			var content = constructSlideTemplate.slideTemplate(
+				req.body.templateImage,
+				req.body.box1head,
+				req.body.box1sub || '',
+				req.body.box2head,
+				req.body.box2sub || ''
+			);
+
+			s.screen.addMessage({
+				type: 'slide',
+				content: content,
+				expire: parseInt(s.settings.slideExpire, 10),
+				delay: parseInt(s.settings.slideDisplay, 10)
+			});
+		}
+
+		res.redirect('/control/slides?success=' + success);
+	});
+
 	s.app.get('/slide/delete', s.urlencodedParser, function(req, res) {
 		var success = false;
 
@@ -221,12 +253,17 @@ function renderSlideList(s, req, res, slideTemplate) {
 		}
 	}
 
+	var templateImgdir = __dirname + '/../public/img/backgrounds/';
+
+	templateImages = s.fs.readdirSync(templateImgdir);
+
 	res.render('slides', {
 		screenAvailable: (s.screen !== undefined),
 		adminPermission: (req.session.adminPermission || false),
 		settings: s.settings,
 		pluginsList: s.pluginManager.registered,
 		slideTemplate: slideTemplate,
+		templateImages: templateImages,
 		slides: slides
 	});
 }
