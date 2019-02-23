@@ -28,5 +28,8 @@ div.container-fluid
 								label.radio-inline
 									input(type='radio', name='shoutoutLayout', value='shoutoutBottom', checked=(settings.layout === 'shoutoutBottom'))
 									img(src='/img/row-split.png')
+							div.form-group
+								label.control-label(for='shoutoutStripTags', style='padding-right: 10px;') Replace HTML Characters
+								input(type='checkbox', name='shoutoutStripTags', value='1', checked=settings.shoutout.striptags)
 							button.btn.btn-default.submitBtn(type='submit') Save
 include footer.pug
