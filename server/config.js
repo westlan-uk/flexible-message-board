@@ -43,7 +43,9 @@ function writeJsonFile(filename, content) {
 	var filepath = getFilePath(filename);
 
 	console.log('Writing: ', filepath);
-	require('fs').writeFile(filepath, JSON.stringify(content, null, 4));
+	require('fs').writeFile(filepath, JSON.stringify(content, null, 4), function(err, result) {
+    if(err) console.log('error', err);
+  });
 }
 
 function readSettingsFromFile() {
@@ -77,6 +79,13 @@ function readSettingsFromFile() {
 
 	if (settings.sound === undefined) {
 		settings.sound = '204424__jaraxe__alarm-3.wav';
+	}
+
+	if (settings.resolution === undefined) {
+		settings.resolution = {
+			x: 1920,
+			y: 1080
+		};
 	}
 
 	settings.availableSounds = getAllSoundFiles();

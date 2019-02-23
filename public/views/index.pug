@@ -17,6 +17,20 @@ div.container-fluid
 							button.btn.btn-default.submitBtn(type='submit') Save
 				div.panel.panel-default
 					div.panel-heading
+						h3.panel-title Display
+					div.panel-body
+						form.form-horizontal(action='/display', method='POST')
+							div.form-group
+								label.control-label.col-sm-2(for='resolutionX') Resolution X
+								div.col-sm-10
+									input.form-control(type='text', name='resolutionX', value=settings.resolution.x)
+							div.form-group
+								label.control-label.col-sm-2(for='resolutionY') Resolution Y
+								div.col-sm-10
+									input.form-control(type='text', name='resolutionY', value=settings.resolution.y)
+							button.btn.btn-default.submitBtn(type='submit') Save
+				div.panel.panel-default
+					div.panel-heading
 						h3.panel-title Notification Sound
 					div.panel-body
 						div.alert.alert-info
@@ -30,9 +44,10 @@ div.container-fluid
 										input(type='radio', name='sound' value=sound, checked=(settings.sound === sound))
 										| #{sound}&nbsp;&nbsp;
 										audio(data-name=sound, src='/sounds/' + sound)
-										button.btn.btn-default.btn-xs.playSound(type='button', data-play=sound)
-											span.glyphicon.glyphicon-play(aria-hidden='true')
-											| &nbsp;Play
+										if sound !== 'nosound'
+											button.btn.btn-default.btn-xs.playSound(type='button', data-play=sound)
+												span.glyphicon.glyphicon-play(aria-hidden='true')
+												| &nbsp;Play
 									br/
 							button.btn.btn-default.submitBtn(type='submit') Save
 				div.panel.panel-default
