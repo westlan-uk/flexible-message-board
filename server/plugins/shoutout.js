@@ -27,8 +27,18 @@ function routes(s) {
 		
 		if (req.body.hasOwnProperty('content')) {
 			success = true;
-			var content = req.body.content;
-			s.screen.emitMessagesToEveryone('shoutout-new', { 
+			var content = "";
+			if (s.settings.shoutout.striptags) {
+        // Escape html key characters
+        content = req.body.content.replace(/</gi, "&lt;");
+        content = content.replace(/>/gi, "&gt;");
+        content = content.replace(/"/gi, "&quot;");
+        content = content.replace(/\\/gi, "&#92;");
+			}
+			else {
+        content = req.body.content;
+			}
+      s.screen.emitMessagesToEveryone('shoutout-new', {
 				content: content,
 				sound: s.settings.sound
 			});
@@ -42,6 +52,12 @@ function routes(s) {
 
 		if (req.body.hasOwnProperty('shoutoutEnabled') && req.body.shoutoutEnabled === '1') {
 			s.settings.shoutout.enabled = true;
+
+			if (req.body.hasOwnProperty('shoutoutStripTags') && req.body.shoutoutStripTags === '1') {
+				s.settings.shoutout.striptags = true;
+			} else {
+				s.settings.shoutout.striptags = false;
+			}
 
 			if (req.body.hasOwnProperty('shoutoutLayout')) {
 				s.settings.layout = req.body.shoutoutLayout;
@@ -75,6 +91,9 @@ function settings(s) {
 	if (settings.enabled === undefined) {
 		settings.enabled = false;
 	}
+  if (settings.striptags === undefined) {
+    settings.striptags = true;
+  }
 }
 
 module.exports = {

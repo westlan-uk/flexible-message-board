@@ -43,7 +43,9 @@ function writeJsonFile(filename, content) {
 	var filepath = getFilePath(filename);
 
 	console.log('Writing: ', filepath);
-	require('fs').writeFile(filepath, JSON.stringify(content, null, 4));
+	require('fs').writeFile(filepath, JSON.stringify(content, null, 4), function(err, result) {
+    if(err) console.log('error', err);
+  });
 }
 
 function readSettingsFromFile() {
